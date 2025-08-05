@@ -16,6 +16,18 @@
     @stack('styles')
 </head>
 <body class="bg-gray-100 overflow-x-hidden">
+    @if(session('success'))
+        <div class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-sm px-4">
+            <x-alert type="success" message="{{ session('success') }}" :timeout="0" />
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-sm px-4">
+            <x-alert type="error" message="{{ session('error') }}" :timeout="0" />
+        </div>
+    @endif
+
     <div class="w-[375px] max-w-[375px] mx-auto min-h-screen bg-white shadow-2xl relative overflow-hidden">
         <!-- Mobile Header -->
         <header class="bg-gradient-to-br from-green-600 to-green-500 text-green-50 p-4 relative overflow-hidden">

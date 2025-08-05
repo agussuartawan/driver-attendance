@@ -6,116 +6,101 @@
     <title>Login - Senyum</title>
 
     <!-- Styles -->
-    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @else
-        <style>
-            /* Custom styles for mobile design */
-            .mobile-dotted-line {
-                height: 2px;
-                background: repeating-linear-gradient(
-                    to right,
-                    #166534 0,
-                    #166534 4px,
-                    transparent 4px,
-                    transparent 8px
-                );
-            }
-
-            .green-blob {
-                position: absolute;
-                bottom: -100px;
-                right: -100px;
-                width: 300px;
-                height: 300px;
-                background: #22c55e;
-                border-radius: 50%;
-            }
-
-            .smiley-eyes {
-                display: flex;
-                justify-content: space-between;
-                margin-bottom: 15px;
-            }
-
-            .eye {
-                width: 12px;
-                height: 12px;
-                background: white;
-                border-radius: 50%;
-            }
-
-            .smiley-mouth {
-                width: 40px;
-                height: 20px;
-                border: 3px solid white;
-                border-top: none;
-                border-radius: 0 0 40px 40px;
-                margin: 0 auto;
-            }
-        </style>
-    @endif
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
     <!-- Mobile Version (hidden on desktop) -->
-    <div class="md:hidden min-h-screen flex flex-col">
+    <div class="md:hidden min-h-screen flex flex-col bg-gray-50">
         <!-- Green Header Section -->
-        <div class="bg-green-500 px-8 py-10">
-            <div class="text-white">
-                <div class="text-lg font-normal font-serif mb-2">Selamat datang di</div>
-                <div class="text-3xl font-semibold font-cursive">Senyum !</div>
+        <div class="bg-gradient-to-br from-green-500 to-green-600 px-6 py-8 relative overflow-hidden">
+            <!-- Decorative circles -->
+            <div class="absolute top-4 right-4 w-16 h-16 bg-white bg-opacity-20 rounded-full"></div>
+            <div class="absolute bottom-4 left-4 w-12 h-12 bg-white bg-opacity-15 rounded-full"></div>
+
+            <div class="text-white relative z-10">
+                <div class="text-base font-normal mb-1 opacity-90">Selamat datang di</div>
+                <div class="text-2xl font-bold">Senyum !</div>
             </div>
         </div>
 
-        <!-- Main White Section -->
-        <div class="flex-1 bg-white px-8 relative">
-            <div class="mobile-dotted-line my-5"></div>
+        <!-- Main Content Section -->
+        <div class="flex-1 px-6 py-8">
+            <!-- Login Card -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+                <h1 class="text-xl font-semibold text-gray-800 text-center mb-6">Ayo masuk!</h1>
 
-            <h1 class="text-2xl font-semibold text-green-800 text-center my-8 font-serif">Ayo masuk!</h1>
-
-            <div class="max-w-xs mx-auto py-5">
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
 
-                    <div class="mb-6">
+                    <div class="mb-4">
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                            Email
+                        </label>
                         <input
                             type="text"
-                            id="username"
-                            name="username"
-                            class="w-full px-5 py-4 border-2 border-green-800 rounded-xl text-base transition-all duration-300 bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100"
-                            placeholder="Username"
+                            id="email"
+                            name="email"
+                            class="w-full px-4 py-3 border rounded-lg text-base transition-all duration-300 bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-100 {{ $errors->has('email') ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-green-500' }}"
+                            placeholder="Masukkan email"
                             required
+                            value="{{ old('email') }}"
                         >
+                        @error('email')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="mb-6">
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                            Kata Sandi
+                        </label>
                         <input
                             type="password"
                             id="password"
                             name="password"
-                            class="w-full px-5 py-4 border-2 border-green-800 rounded-xl text-base transition-all duration-300 bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100"
-                            placeholder="Password"
+                            class="w-full px-4 py-3 border rounded-lg text-base transition-all duration-300 bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-100 {{ $errors->has('password') ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-green-500' }}"
+                            placeholder="Masukkan password"
                             required
+                            value="{{ old('password') }}"
                         >
+                        @error('password')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
-                    <button type="submit" class="w-full px-5 py-4 bg-green-500 text-white border-none rounded-xl text-lg font-semibold cursor-pointer transition-all duration-300 hover:bg-green-600 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-300">
+                    <button type="submit" class="w-full px-4 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white border-none rounded-xl text-base font-semibold cursor-pointer transition-all duration-300 hover:from-green-600 hover:to-green-700 active:scale-95 shadow-md">
                         Masuk
                     </button>
                 </form>
             </div>
 
-            <div class="mobile-dotted-line my-5"></div>
-
-            <!-- Bottom Decorative Section -->
-            <div class="relative h-48 mt-10">
-                <div class="green-blob flex items-center justify-center">
-                    <div class="w-20 h-20 relative -mt-12 -ml-12">
-                        <div class="smiley-eyes">
-                            <div class="eye"></div>
-                            <div class="eye"></div>
+            <!-- Decorative Bottom Section -->
+            <div class="relative">
+                <!-- Decorative line -->
+                <div class="flex items-center justify-center mb-6">
+                    <div class="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
+                    <div class="mx-4">
+                        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                            <div class="w-4 h-4 bg-white rounded-full"></div>
                         </div>
-                        <div class="smiley-mouth"></div>
+                    </div>
+                    <div class="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
+                </div>
+
+                <!-- Smile face decoration -->
+                <div class="flex justify-center">
+                    <div class="relative">
+                        <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center shadow-lg">
+                            <div class="w-12 h-12 relative">
+                                <!-- Eyes -->
+                                <div class="flex justify-between mb-2">
+                                    <div class="w-2 h-2 bg-white rounded-full"></div>
+                                    <div class="w-2 h-2 bg-white rounded-full"></div>
+                                </div>
+                                <!-- Smile -->
+                                <div class="w-8 h-4 border-2 border-white border-t-0 rounded-b-full mx-auto"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -133,31 +118,39 @@
                     @csrf
 
                     <div class="mb-6">
-                        <label for="username-desktop" class="block text-green-500 font-medium mb-2 text-sm uppercase tracking-wide">
-                            USERNAME
+                        <label for="email" class="block text-green-500 font-medium mb-2 text-sm tracking-wide">
+                            Email
                         </label>
                         <input
                             type="text"
-                            id="username-desktop"
-                            name="username"
-                            class="w-full px-5 py-4 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 bg-white focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100"
-                            value="admin"
+                            id="email"
+                            name="email"
+                            class="w-full px-4 py-3 border-2 rounded-lg text-base transition-all duration-300 bg-white focus:outline-none focus:ring-4 focus:ring-green-100 {{ $errors->has('email') ? 'border-red-500 focus:border-red-500' : 'border-gray-200 focus:border-green-500' }}"
+                            placeholder="Masukkan email"
+                            value="{{ old('email') }}"
                             required
                         >
+                        @error('email')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="mb-6">
-                        <label for="password-desktop" class="block text-green-500 font-medium mb-2 text-sm uppercase tracking-wide">
-                            PASSWORD
+                        <label for="password" class="block text-green-500 font-medium mb-2 text-sm tracking-wide">
+                            Kata Sandi
                         </label>
                         <input
                             type="password"
-                            id="password-desktop"
+                            id="password"
                             name="password"
-                            class="w-full px-5 py-4 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 bg-white focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100"
-                            value="******"
+                            class="w-full px-4 py-3 border-2 rounded-lg text-base transition-all duration-300 bg-white focus:outline-none focus:ring-4 focus:ring-green-100 {{ $errors->has('password') ? 'border-red-500 focus:border-red-500' : 'border-gray-200 focus:border-green-500' }}"
+                            placeholder="Masukkan password"
+                            value="{{ old('password') }}"
                             required
                         >
+                        @error('password')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <button type="submit" class="w-full px-5 py-4 bg-green-500 text-white border-none rounded-lg text-lg font-semibold cursor-pointer transition-all duration-300 hover:bg-green-600 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-300 mt-5">

@@ -16,6 +16,18 @@
     @stack('styles')
 </head>
 <body class="bg-amber-50">
+    @if(session('success'))
+        <div class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-sm px-4">
+            <x-alert type="success" message="{{ session('success') }}" :timeout="0" />
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-sm px-4">
+            <x-alert type="error" message="{{ session('error') }}" :timeout="0" />
+        </div>
+    @endif
+
     <div class="min-h-screen flex flex-col">
         <!-- Top Header Bar -->
         <header class="bg-gradient-to-r from-green-600 to-green-700 text-white px-8 py-5 flex items-center justify-between shadow-lg relative">

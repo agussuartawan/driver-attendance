@@ -47,10 +47,14 @@
             </div>
 
             <div class="relative z-10 flex items-center gap-6">
-                <a href="{{ route('logout') }}" class="flex items-center gap-2 text-sm border border-white/20 px-4 py-2 hover:bg-white/10 rounded-xl transition-all duration-200 group">
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    @method('POST')
+                    <button type="submit" class="flex items-center gap-2 text-sm border border-white/20 px-4 py-2 hover:bg-white/10 rounded-xl transition-all duration-200 group">
                     <x-icons.heroicon name="logout" class="w-5 h-5 group-hover:scale-110 transition-transform text-white" />
                     Logout
-                </a>
+                    </button>
+                </form>
                 <div class="flex items-center gap-0">
                     <!-- Search Icon -->
                     <button class="p-3 hover:bg-white/10 rounded-xl transition-all duration-200 group">

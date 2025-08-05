@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // Login routes
@@ -13,17 +14,11 @@ Route::middleware('auth')->group(function () {
     Route::middleware(['role:admin'])->group(function () {
         // Employee routes
         Route::group(['prefix' => 'employee'], function () {
-            Route::get('/', function () {
-                return view('dashboard.employee.index');
-            })->name('employee');
-
-            Route::get('/form', function () {
-                return view('dashboard.employee.form');
-            })->name('employee.form.add');
-
-            Route::get('/form/{id}', function ($id) {
-                return view('dashboard.employee.form', ['id' => $id]);
-            })->name('employee.form.edit');
+            Route::get('/', [UserController::class, 'getEmployee'])->name('employee');
+            Route::get('/form', [UserController::class, 'employeeForm'])->name('employee.form.add');
+            Route::get('/form/{employee}', [UserController::class, 'employeeForm'])->name('employee.form.edit');
+            Route::post('/form', [UserController::class, 'storeEmployee'])->name('employee.form.add');
+            Route::patch('/form/{employee}', [UserController::class, 'updateEmployee'])->name('employee.form.edit');
         });
 
         // Schedule routes

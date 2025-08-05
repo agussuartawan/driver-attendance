@@ -10,33 +10,21 @@
         @php
             $columns = [
                 ['key' => 'name', 'label' => 'Nama', 'class' => 'font-medium text-gray-900'],
-                ['key' => 'position', 'label' => 'Jabatan'],
+                ['key' => 'role', 'label' => 'Jabatan'],
                 ['key' => 'email', 'label' => 'Email'],
                 ['key' => 'phone', 'label' => 'Telepon'],
                 ['key' => 'status', 'label' => 'Status', 'type' => 'status'],
-                ['key' => 'join_date', 'label' => 'Tanggal Bergabung', 'type' => 'date', 'format' => 'd M Y']
-            ];
-
-            $data = [
-                [
-                    'id' => 1,
-                    'name' => 'Ahmad Rizki',
-                    'position' => 'Software Engineer',
-                    'email' => 'ahmad.rizki@company.com',
-                    'phone' => '0812-3456-7890',
-                    'status' => ['text' => 'Aktif', 'class' => 'bg-green-100 text-green-800'],
-                    'join_date' => '2023-01-15'
-                ]
+                ['key' => 'created_at', 'label' => 'Tanggal Bergabung', 'type' => 'date', 'format' => 'd M Y']
             ];
 
             $actions = [
                 [
                     'label' => 'Edit',
-                    'url' => fn($row) => route('employee.form.edit', ['id' => $row['id']]),
+                    'url' => fn($row) => route('employee.form.edit', ['employee' => $row]),
                     'class' => 'bg-blue-600 hover:bg-blue-700'
                 ],
                 [
-                    'label' => 'Hapus',
+                    'label' => 'Nonaktifkan',
                     'url' => fn($row) => '#',
                     'class' => 'bg-red-600 hover:bg-red-700'
                 ]
@@ -58,7 +46,7 @@
 
         <x-data-table
             :columns="$columns"
-            :data="$data"
+            :data="$employees"
             :actions="$actions"
             :button="$button"
             table-id="employeeTable"

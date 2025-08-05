@@ -86,6 +86,13 @@
             <p>{{ $noResultsMessage }}</p>
         </div>
     </div>
+
+    {{-- Pagination with Tailwind CSS --}}
+    @if(method_exists($data, 'links'))
+        <div class="px-6 py-4 border-t border-gray-200">
+            {{ $data->links('vendor.pagination.tailwind') }}
+        </div>
+    @endif
 </div>
 
 @if($searchable)

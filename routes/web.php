@@ -10,50 +10,52 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
 
-    // Dashboard routes
-    Route::get('/dashboard', function () {
-        return view('dashboard.index');
-    })->name('dashboard');
+    Route::middleware(['role:admin'])->group(function () {
+        // Employee routes
+        Route::group(['prefix' => 'employee'], function () {
+            Route::get('/', function () {
+                return view('dashboard.employee.index');
+            })->name('employee');
 
-    // Employee routes
-    Route::group(['prefix' => 'employee'], function () {
-        Route::get('/', function () {
-            return view('dashboard.employee.index');
-        })->name('employee');
+            Route::get('/form', function () {
+                return view('dashboard.employee.form');
+            })->name('employee.form.add');
 
-        Route::get('/form', function () {
-            return view('dashboard.employee.form');
-        })->name('employee.form.add');
+            Route::get('/form/{id}', function ($id) {
+                return view('dashboard.employee.form', ['id' => $id]);
+            })->name('employee.form.edit');
+        });
 
-        Route::get('/form/{id}', function ($id) {
-            return view('dashboard.employee.form', ['id' => $id]);
-        })->name('employee.form.edit');
-    });
+        // Schedule routes
+        Route::group(['prefix' => 'schedule'], function () {
+            Route::get('/', function () {
+                return view('dashboard.schedule.index');
+            })->name('schedule');
 
-    // Schedule routes
-    Route::group(['prefix' => 'schedule'], function () {
-        Route::get('/', function () {
-            return view('dashboard.schedule.index');
-        })->name('schedule');
+            Route::get('/form', function () {
+                return view('dashboard.schedule.form');
+            })->name('schedule.form.add');
 
-        Route::get('/form', function () {
-            return view('dashboard.schedule.form');
-        })->name('schedule.form.add');
+            Route::get('/form/{id}', function ($id) {
+                return view('dashboard.schedule.form', ['id' => $id]);
+            })->name('schedule.form.edit');
+        });
 
-        Route::get('/form/{id}', function ($id) {
-            return view('dashboard.schedule.form', ['id' => $id]);
-        })->name('schedule.form.edit');
-    });
-
-    // Receipt routes
-    Route::group(['prefix' => 'receipt'], function () {
-        Route::get('/', function () {
-            return view('dashboard.receipt.index');
-        })->name('receipt');
+        // Receipt routes
+        Route::group(['prefix' => 'receipt'], function () {
+            Route::get('/', function () {
+                return view('dashboard.receipt.index');
+            })->name('receipt');
+        });
     });
 
     // Report routes
-    Route::group(['prefix' => 'report'], function () {
+    Route::group(['prefix' => 'report', 'middleware' => ['role:admin|manager']], function () {
+        // Dashboard routes
+        Route::get('/dashboard', function () {
+            return view('dashboard.index');
+        })->name('dashboard');
+
         Route::get('/attendance', function () {
             return view('dashboard.report.attendance');
         })->name('report.attendance');
@@ -64,8 +66,7 @@ Route::middleware('auth')->group(function () {
     });
 
     // Mobile routes
-    Route::group(['prefix' => 'mobile'], function () {
-
+    Route::group(['prefix' => 'mobile', 'middleware' => ['role:driver']], function () {
         Route::group(['prefix' => 'attendance'], function () {
             Route::get('/', function () {
                 return view('mobile.attendance.index');

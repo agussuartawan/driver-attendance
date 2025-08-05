@@ -38,7 +38,7 @@
 
             <div class="relative z-10 flex items-center gap-4">
                 <div class="text-xl font-semibold">
-                    Hallo, Admin !
+                    Hallo, {{ auth()->user()->name }} !
                 </div>
                 <div class="w-px h-8 bg-white/20"></div>
                 <div class="text-sm text-green-100">
@@ -49,7 +49,6 @@
             <div class="relative z-10 flex items-center gap-6">
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    @method('POST')
                     <button type="submit" class="flex items-center gap-2 text-sm border border-white/20 px-4 py-2 hover:bg-white/10 rounded-xl transition-all duration-200 group">
                     <x-icons.heroicon name="logout" class="w-5 h-5 group-hover:scale-110 transition-transform text-white" />
                     Logout
@@ -70,11 +69,11 @@
                 <!-- User Profile -->
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                        <span class="text-white font-semibold text-sm">EP</span>
+                        <span class="text-white font-semibold text-sm">{{ auth()->user()->name[0] }}</span>
                     </div>
                     <div class="flex flex-col">
-                        <span class="font-semibold text-sm">Erni Primayanti</span>
-                        <span class="text-xs text-green-100">Administrator</span>
+                        <span class="font-semibold text-sm">{{ auth()->user()->name }}</span>
+                        <span class="text-xs text-green-100">{{ auth()->user()->getRoleNames()->first() }}</span>
                     </div>
                 </div>
             </div>

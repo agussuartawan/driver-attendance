@@ -15,13 +15,12 @@ class UserController extends Controller
         $employees = User::with(['roles:id,name'])->role('driver');
 
         if ($request->search) {
-            $employees->where('name', 'like', '%' . $request->search . '%');
+            $employees->where('name', 'like', '%' . $request->search . '%')
+                ->orWhere('phone', 'like', '%' . $request->search . '%')
+                ->orWhere('email', 'like', '%' . $request->search . '%');
         }
 
-        $employees = $employees->orderBy('created_at', 'desc')->paginate(10)->through(function ($employee) {
-            $employee->role = $employee->roles->first()->name . ' (' . ($employee->vehicle ?? 'Tidak ada info kendaraan') . ')';
-            return $employee;
-        });
+        $employees = $employees->orderBy('created_at', 'desc')->paginate(10);
 
         return view('dashboard.employee.index', compact('employees'));
     }
@@ -60,5 +59,11 @@ class UserController extends Controller
         }
         $employee->update($data);
         return redirect()->route('employee')->with('success', 'Karyawan berhasil diubah');
+    }
+
+    public function employeeStatusToggle(User $employee)
+    {
+        $employee->update(['status' => $employee->status == 'active' ? 'inactive' : 'active']);
+        return back()->with('success', 'Status karyawan berhasil diubah');
     }
 }

@@ -19,6 +19,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/form/{employee}', [UserController::class, 'employeeForm'])->name('employee.form.edit');
             Route::post('/form', [UserController::class, 'storeEmployee'])->name('employee.form.add');
             Route::patch('/form/{employee}', [UserController::class, 'updateEmployee'])->name('employee.form.edit');
+            Route::patch('/status/{employee}', [UserController::class, 'employeeStatusToggle'])->name('employee.status.toggle');
         });
 
         // Schedule routes

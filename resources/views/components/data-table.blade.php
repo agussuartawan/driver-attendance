@@ -23,14 +23,22 @@
         @endif
         @if($searchable)
             <form action="{{ route('employee') }}" method="get" class="w-full p-6 border-b border-gray-200">
-                <input
-                    value="{{ request()->get('search') }}"
-                    name="search"
-                    type="text"
-                    id="searchInput-{{ $tableId }}"
-                    class="w-full px-4 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
-                    placeholder="{{ $searchPlaceholder }}"
-                >
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                    <input
+                        value="{{ request()->get('search') }}"
+                        name="search"
+                        type="text"
+                        id="searchInput-{{ $tableId }}"
+                        class="w-full pl-10 px-4 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                        placeholder="{{ $searchPlaceholder }}"
+                    >
+                </div>
             </form>
         @endif
     </div>
@@ -51,7 +59,7 @@
                 </tr>
             </thead>
             <tbody id="tableBody-{{ $tableId }}" class="divide-y divide-gray-100">
-                @foreach($data as $row)
+                @forelse($data as $row)
                     <tr class="hover:bg-gray-50 transition-colors">
                         @foreach($columns as $column)
                             <td class="px-6 py-4 text-xs {{ $column['class'] ?? 'text-gray-600' }}">
@@ -69,74 +77,70 @@
                         @if(!empty($actions))
                             <td class="px-6 py-4">
                                 @foreach($actions as $action)
-                                    <a href="{{ $action['url']($row) }}"
-                                       class="inline-flex items-center px-3 py-1 text-xs font-medium text-white {{ $action['class'] }} rounded-md hover:opacity-80 transition-colors {{ $loop->last ? '' : 'mr-2' }}">
-                                        {{ $action['label'] }}
-                                    </a>
+                                    @php
+                                        // Handle closure functions for label, class, and confirm
+                                        $label = is_callable($action['label']) ? $action['label']($row) : $action['label'];
+                                        $class = is_callable($action['class'] ?? null) ? $action['class']($row) : ($action['class'] ?? 'bg-blue-600 hover:bg-blue-700');
+                                        $confirm = is_callable($action['confirm'] ?? null) ? $action['confirm']($row) : ($action['confirm'] ?? null);
+                                    @endphp
+
+                                    @if(isset($action['type']) && $action['type'] === 'link')
+                                        {{-- Link Action --}}
+                                        <a href="{{ $action['url']($row) }}"
+                                           class="inline-flex items-center px-3 py-1 text-xs font-medium text-white {{ $class }} rounded-md hover:opacity-80 transition-colors {{ $loop->last ? '' : 'mr-2' }}">
+                                            {{ $label }}
+                                        </a>
+                                    @elseif(isset($action['type']) && $action['type'] === 'button')
+                                        {{-- Button Click Action --}}
+                                        <button
+                                            type="button"
+                                            onclick="{{ $action['onclick']($row) }}"
+                                            class="inline-flex items-center px-3 py-1 text-xs font-medium text-white {{ $class }} rounded-md hover:opacity-80 transition-colors {{ $loop->last ? '' : 'mr-2' }}">
+                                            {{ $label }}
+                                        </button>
+                                    @elseif(isset($action['type']) && $action['type'] === 'form')
+                                        {{-- Form Submit Action --}}
+                                        <form action="{{ $action['action']($row) }}" method="POST" class="inline-block">
+                                            @csrf
+                                            @method($action['method'] ?? 'POST')
+                                            @if(isset($action['fields']))
+                                                @foreach($action['fields']($row) as $name => $value)
+                                                    <input type="hidden" name="{{ $name }}" value="{{ $value }}">
+                                                @endforeach
+                                            @endif
+                                            <button
+                                                type="submit"
+                                                @if($confirm) onclick="return confirm('{{ $confirm }}')" @endif
+                                                class="inline-flex items-center px-3 py-1 text-xs font-medium text-white {{ $class }} rounded-md hover:opacity-80 transition-colors {{ $loop->last ? '' : 'mr-2' }}">
+                                                {{ $label }}
+                                            </button>
+                                        </form>
+                                    @else
+                                        {{-- Default Link Action (Backward Compatibility) --}}
+                                        <a href="{{ $action['url']($row) }}"
+                                           class="inline-flex items-center px-3 py-1 text-xs font-medium text-white {{ $class }} rounded-md hover:opacity-80 transition-colors {{ $loop->last ? '' : 'mr-2' }}">
+                                            {{ $label }}
+                                        </a>
+                                    @endif
                                 @endforeach
                             </td>
                         @endif
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="{{ count($columns) + 1 }}" class="px-6 py-4 text-center text-gray-500">
+                            {{ $noResultsMessage }}
+                        </td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
-
-        <!-- No Results Message -->
-        <div id="noResults-{{ $tableId }}" class="text-center py-8 text-gray-500" style="display: none;">
-            <p>{{ $noResultsMessage }}</p>
-        </div>
     </div>
 
     {{-- Pagination with Tailwind CSS --}}
     @if(method_exists($data, 'links'))
-        <div class="px-6 py-4 border-t border-gray-200">
+        <div class="px-6 py-4">
             {{ $data->links('vendor.pagination.tailwind') }}
         </div>
     @endif
 </div>
-
-@if($searchable)
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('searchInput-{{ $tableId }}');
-        const tableBody = document.getElementById('tableBody-{{ $tableId }}');
-        const rows = tableBody.getElementsByTagName('tr');
-        const noResults = document.getElementById('noResults-{{ $tableId }}');
-
-        searchInput.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            let hasResults = false;
-
-            for (let i = 0; i < rows.length; i++) {
-                const row = rows[i];
-                const cells = row.getElementsByTagName('td');
-                let rowVisible = false;
-
-                // Search in all columns except the last one (actions column)
-                const searchableCells = !empty($actions) ? cells.length - 1 : cells.length;
-                for (let j = 0; j < searchableCells; j++) {
-                    const cellText = cells[j].textContent.toLowerCase();
-                    if (cellText.includes(searchTerm)) {
-                        rowVisible = true;
-                        break;
-                    }
-                }
-
-                if (rowVisible) {
-                    row.style.display = '';
-                    hasResults = true;
-                } else {
-                    row.style.display = 'none';
-                }
-            }
-
-            // Show/hide no results message
-            if (hasResults) {
-                noResults.style.display = 'none';
-            } else {
-                noResults.style.display = 'block';
-            }
-        });
-    });
-</script>
-@endif

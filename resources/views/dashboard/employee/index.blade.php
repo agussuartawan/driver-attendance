@@ -2,55 +2,64 @@
 
 @section('title', 'Data Karyawan')
 
+@php
+    $columns = [
+        ['key' => 'name', 'label' => 'Nama', 'class' => 'font-medium text-gray-900'],
+        ['key' => 'role', 'label' => 'Jabatan'],
+        ['key' => 'email', 'label' => 'Email'],
+        ['key' => 'phone', 'label' => 'Telepon'],
+        ['key' => 'status', 'label' => 'Status', 'type' => 'status'],
+        ['key' => 'created_at', 'label' => 'Tanggal Bergabung', 'type' => 'date', 'format' => 'd M Y']
+    ];
+
+    $actions = [
+        [
+            'label' => 'Edit',
+            'url' => fn($row) => route('employee.form.edit', ['employee' => $row]),
+            'class' => 'bg-blue-600 hover:bg-blue-700'
+        ],
+        [
+            'type' => 'form',
+            'label' => fn($row) => $row['status']['text'] == 'Aktif' ? 'Nonaktifkan' : 'Aktifkan',
+            'action' => fn($row) => route('employee.status.toggle', ['employee' => $row]),
+            'method' => 'PATCH',
+            'class' => fn($row) => $row['status']['text'] == 'Aktif' ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700',
+            'confirm' => fn($row) => $row['status']['text'] == 'Aktif'
+                ? 'Apakah Anda yakin ingin menonaktifkan karyawan ini?'
+                : 'Apakah Anda yakin ingin mengaktifkan karyawan ini?',
+        ]
+    ];
+
+    $data = $employees->through(function ($employee) {
+        $employee->role = $employee->roles->first()->name . ' (' . ($employee->vehicle ?? 'Tidak ada info kendaraan') . ')';
+        $employee->status = [
+            'text' => $employee->status == 'active' ? 'Aktif' : 'Nonaktif',
+            'class' => $employee->status == 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+        ];
+        return $employee;
+    });
+
+    $button = [
+        [
+            'label' => 'Tambah Karyawan',
+            'url' => route('employee.form.add'),
+            'class' => 'bg-green-600 hover:bg-green-700'
+        ]
+    ];
+@endphp
+
 @section('content')
     <!-- Page Title -->
     <h1 class="text-3xl font-bold text-gray-700 mb-8">DATA KARYAWAN</h1>
 
     <div class="grid grid-cols-1 gap-6">
-        @php
-            $columns = [
-                ['key' => 'name', 'label' => 'Nama', 'class' => 'font-medium text-gray-900'],
-                ['key' => 'role', 'label' => 'Jabatan'],
-                ['key' => 'email', 'label' => 'Email'],
-                ['key' => 'phone', 'label' => 'Telepon'],
-                ['key' => 'status', 'label' => 'Status', 'type' => 'status'],
-                ['key' => 'created_at', 'label' => 'Tanggal Bergabung', 'type' => 'date', 'format' => 'd M Y']
-            ];
-
-            $actions = [
-                [
-                    'label' => 'Edit',
-                    'url' => fn($row) => route('employee.form.edit', ['employee' => $row]),
-                    'class' => 'bg-blue-600 hover:bg-blue-700'
-                ],
-                [
-                    'label' => 'Nonaktifkan',
-                    'url' => fn($row) => '#',
-                    'class' => 'bg-red-600 hover:bg-red-700'
-                ]
-            ];
-
-            $button = [
-                [
-                    'label' => 'Tambah Karyawan',
-                    'url' => route('employee.form.add'),
-                    'class' => 'bg-green-600 hover:bg-green-700'
-                ],
-                [
-                    'label' => 'Import Karyawan',
-                    'url' => route('employee.form.add'),
-                    'class' => 'bg-yellow-600 hover:bg-yellow-700'
-                ]
-            ];
-        @endphp
-
         <x-data-table
             :columns="$columns"
             :data="$employees"
             :actions="$actions"
             :button="$button"
             table-id="employeeTable"
-            search-placeholder="Cari karyawan berdasarkan nama, jabatan, atau email..."
+            search-placeholder="Cari karyawan berdasarkan nama, nomor telepon atau email..."
         />
     </div>
 @endsection

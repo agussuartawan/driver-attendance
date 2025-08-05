@@ -11,98 +11,120 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Styles -->
-    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @else
-        <style>
-            /* Custom styles for dashboard */
-            body {
-                font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-            }
-
-            .sidebar-item {
-                @apply flex items-center gap-4 px-6 py-4 text-green-600 hover:bg-green-50 transition-colors duration-200;
-            }
-
-            .sidebar-item.active {
-                @apply bg-green-100 text-green-700 font-medium;
-            }
-
-            .sidebar-section {
-                @apply text-xs font-semibold text-gray-500 uppercase tracking-wider px-6 py-3;
-            }
-        </style>
-    @endif
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     @stack('styles')
 </head>
 <body class="bg-amber-50">
     <div class="min-h-screen flex flex-col">
         <!-- Top Header Bar -->
-        <header class="bg-green-600 text-white px-6 py-4 flex items-center justify-between">
-            <div class="text-lg font-medium">
-                Hallo, Admin !
+        <header class="bg-gradient-to-r from-green-600 to-green-700 text-white px-8 py-5 flex items-center justify-between shadow-lg relative">
+            <!-- Background Pattern -->
+            <div class="absolute inset-0 opacity-10">
+                <div class="absolute inset-0" style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 20px 20px;"></div>
             </div>
-            <div class="flex items-center gap-4">
-                <!-- Search Icon -->
-                <button class="p-2 hover:bg-green-700 rounded-lg transition-colors">
-                    <x-icons.heroicon name="magnifying-glass" class="w-5 h-5" />
-                </button>
-                <!-- Notification Icon -->
-                <button class="p-2 hover:bg-green-700 rounded-lg transition-colors">
-                    <x-icons.heroicon name="bell" class="w-5 h-5" />
-                </button>
-                <!-- User Name -->
-                <span class="font-medium">Erni Primayanti</span>
+
+            <div class="relative z-10 flex items-center gap-4">
+                <div class="text-xl font-semibold">
+                    Hallo, Admin !
+                </div>
+                <div class="w-px h-8 bg-white/20"></div>
+                <div class="text-sm text-green-100">
+                    Selamat datang kembali
+                </div>
+            </div>
+
+            <div class="relative z-10 flex items-center gap-6">
+                <a href="{{ route('logout') }}" class="flex items-center gap-2 text-sm border border-white/20 px-4 py-2 hover:bg-white/10 rounded-xl transition-all duration-200 group">
+                    <x-icons.heroicon name="logout" class="w-5 h-5 group-hover:scale-110 transition-transform text-white" />
+                    Logout
+                </a>
+                <div class="flex items-center gap-0">
+                    <!-- Search Icon -->
+                    <button class="p-3 hover:bg-white/10 rounded-xl transition-all duration-200 group">
+                        <x-icons.heroicon name="magnifying-glass" class="w-5 h-5 group-hover:scale-110 transition-transform" />
+                    </button>
+                    <!-- Notification Icon -->
+                    <button class="p-3 hover:bg-white/10 rounded-xl transition-all duration-200 group relative">
+                        <x-icons.heroicon name="bell" class="w-5 h-5 group-hover:scale-110 transition-transform" />
+                        <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-400 rounded-full border-2 border-white"></span>
+                    </button>
+                </div>
+
+                <!-- User Profile -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                        <span class="text-white font-semibold text-sm">EP</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-semibold text-sm">Erni Primayanti</span>
+                        <span class="text-xs text-green-100">Administrator</span>
+                    </div>
+                </div>
             </div>
         </header>
 
         <div class="flex flex-1">
             <!-- Left Sidebar -->
-            <aside class="w-72 bg-white border-r border-gray-200">
-                <nav class="p-6">
+            <aside class="w-80 bg-white shadow-xl relative">
+                <!-- Sidebar Header -->
+                <div class="p-6 border-b border-gray-100">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
+                            <x-icons.heroicon name="chart-bar" class="w-6 h-6 text-green-600" />
+                        </div>
+                        <div>
+                            <h2 class="font-bold text-gray-900">Senyum Dashboard</h2>
+                            <p class="text-xs text-gray-500">Management System</p>
+                        </div>
+                    </div>
+                </div>
+
+                <nav class="p-4">
                     <!-- Dashboard Section -->
-                    <div class="mb-8">
-                        <x-dashboard.sidebar-item href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                    <div class="mb-4">
+                        <a href="{{ route('dashboard') }}" class="flex items-center gap-4 px-6 py-4 text-green-600 hover:bg-green-50 hover:text-green-700 hover:shadow-lg hover:scale-105 hover:translate-x-1 transition-all duration-300 ease-in-out rounded-xl mx-2 {{ request()->routeIs('dashboard') ? 'bg-green-100 text-green-700 font-medium shadow-sm' : '' }}">
                             <x-icons.heroicon name="chart-bar" class="w-5 h-5" />
-                            <span>DASHBOARD</span>
-                        </x-dashboard.sidebar-item>
+                            <span class="font-medium">DASHBOARD</span>
+                        </a>
                     </div>
 
-                    <hr class="border-gray-200 mb-8">
+                    <div class="w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent mb-4"></div>
 
                     <!-- Features Section -->
-                    <div class="mb-6">
-                        <div class="sidebar-section">FEATURES</div>
+                    <div class="mb-4">
+                        <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-6">FEATURES</div>
                     </div>
 
-                    <div class="space-y-6">
-                        <x-dashboard.sidebar-item href="{{ route('employee') }}">
+                    <div class="space-y-2">
+                        <a href="{{ route('employee') }}" class="flex items-center gap-4 px-6 py-2 text-green-600 hover:bg-green-50 hover:text-green-700 hover:shadow-lg hover:scale-105 hover:translate-x-1 transition-all duration-300 ease-in-out rounded-xl mx-2 {{ str_contains(request()->route()->getName(), 'employee') ? 'bg-green-100 text-green-700 font-medium shadow-sm' : '' }}">
                             <x-icons.heroicon name="users" class="w-5 h-5" />
-                            <span>DATA KARYAWAN</span>
-                        </x-dashboard.sidebar-item>
+                            <span class="font-medium">DATA KARYAWAN</span>
+                        </a>
 
-                        <x-dashboard.sidebar-item href="#">
+                        <a href="{{ route('schedule') }}" class="flex items-center gap-4 px-6 py-2 text-green-600 hover:bg-green-50 hover:text-green-700 hover:shadow-lg hover:scale-105 hover:translate-x-1 transition-all duration-300 ease-in-out rounded-xl mx-2 {{ str_contains(request()->route()->getName(), 'schedule') ? 'bg-green-100 text-green-700 font-medium shadow-sm' : '' }}">
                             <x-icons.heroicon name="calendar" class="w-5 h-5" />
-                            <span>JADWAL TAMU</span>
-                        </x-dashboard.sidebar-item>
+                            <span class="font-medium">JADWAL TAMU</span>
+                        </a>
 
-                        <x-dashboard.sidebar-item href="#">
+                        <a href="{{ route('receipt') }}" class="flex items-center gap-4 px-6 py-2 text-green-600 hover:bg-green-50 hover:text-green-700 hover:shadow-lg hover:scale-105 hover:translate-x-1 transition-all duration-300 ease-in-out rounded-xl mx-2 {{ str_contains(request()->route()->getName(), 'receipt') ? 'bg-green-100 text-green-700 font-medium shadow-sm' : '' }}">
                             <x-icons.heroicon name="document-text" class="w-5 h-5" />
-                            <span>NOTA BIAYA</span>
-                        </x-dashboard.sidebar-item>
+                            <span class="font-medium">NOTA BIAYA</span>
+                        </a>
 
-                        <x-dashboard.sidebar-item href="#">
+                        <a href="{{ route('report.attendance') }}" class="flex items-center gap-4 px-6 py-2 text-green-600 hover:bg-green-50 hover:text-green-700 hover:shadow-lg hover:scale-105 hover:translate-x-1 transition-all duration-300 ease-in-out rounded-xl mx-2 {{ str_contains(request()->route()->getName(), 'report.attendance') ? 'bg-green-100 text-green-700 font-medium shadow-sm' : '' }}">
                             <x-icons.heroicon name="clipboard-list" class="w-5 h-5" />
-                            <span>LAPORAN ABSENSI</span>
-                        </x-dashboard.sidebar-item>
+                            <span class="font-medium">LAPORAN ABSENSI</span>
+                        </a>
                     </div>
                 </nav>
             </aside>
 
             <!-- Main Content Area -->
-            <main class="flex-1 p-6">
-                @yield('content')
+            <main class="flex-1 p-8 bg-gradient-to-br from-amber-50 to-green-50">
+                <div class="mx-auto">
+                    @yield('content')
+                </div>
             </main>
         </div>
     </div>

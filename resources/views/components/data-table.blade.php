@@ -11,7 +11,7 @@
 
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
     <!-- Search Bar -->
-    <div class="grid grid-cols-2 items-center">
+    <div class="grid grid-cols-2 items-center justify-between items-center">
         @if(!empty($button))
             <div class="p-6 border-b border-gray-200">
                 @foreach($button as $btn)
@@ -22,13 +22,13 @@
             </div>
         @endif
         @if($searchable)
-            <form action="{{ route('employee') }}" method="get" class="p-6 border-b border-gray-200 flex justify-end">
+            <form action="{{ route('employee') }}" method="get" class="w-full p-6 border-b border-gray-200">
                 <input
                     value="{{ request()->get('search') }}"
                     name="search"
                     type="text"
                     id="searchInput-{{ $tableId }}"
-                    class="w-full max-w-md px-4 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    class="w-full px-4 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
                     placeholder="{{ $searchPlaceholder }}"
                 >
             </form>

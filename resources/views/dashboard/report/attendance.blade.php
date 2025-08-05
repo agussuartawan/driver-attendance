@@ -1,10 +1,10 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Data Karyawan')
+@section('title', 'Laporan Absensi')
 
 @section('content')
     <!-- Page Title -->
-    <h1 class="text-3xl font-bold text-gray-700 mb-8">DATA KARYAWAN</h1>
+    <h1 class="text-3xl font-bold text-gray-700 mb-8">LAPORAN ABSENSI</h1>
 
     <div class="grid grid-cols-1 gap-6">
         @php
@@ -19,6 +19,7 @@
 
             $data = [
                 [
+                    'id' => 1,
                     'name' => 'Ahmad Rizki',
                     'position' => 'Software Engineer',
                     'email' => 'ahmad.rizki@company.com',
@@ -28,29 +29,11 @@
                 ]
             ];
 
-            $actions = [
-                [
-                    'label' => 'Edit',
-                    'url' => fn($row) => '#',
-                    'class' => 'bg-blue-600 hover:bg-blue-700'
-                ],
-                [
-                    'label' => 'Hapus',
-                    'url' => fn($row) => '#',
-                    'class' => 'bg-red-600 hover:bg-red-700'
-                ]
-            ];
-
             $button = [
                 [
-                    'label' => 'Tambah Karyawan',
-                    'url' => route('employee.create'),
+                    'label' => 'Unduh Laporan',
+                    'url' => route('report.attendance.export'),
                     'class' => 'bg-green-600 hover:bg-green-700'
-                ],
-                [
-                    'label' => 'Import Karyawan',
-                    'url' => route('employee.create'),
-                    'class' => 'bg-yellow-600 hover:bg-yellow-700'
                 ]
             ];
         @endphp
@@ -58,10 +41,9 @@
         <x-data-table
             :columns="$columns"
             :data="$data"
-            :actions="$actions"
             :button="$button"
             table-id="employeeTable"
-            search-placeholder="Cari karyawan berdasarkan nama, jabatan, atau email..."
+            search-placeholder="Cari laporan absensi"
         />
     </div>
 @endsection

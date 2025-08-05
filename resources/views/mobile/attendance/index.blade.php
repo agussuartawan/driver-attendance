@@ -28,21 +28,18 @@
 
         <!-- Action Buttons -->
         <div class="space-y-4 flex flex-col gap-2">
-            <a href="{{ route('mobile.attendance-start') }}" class="block w-full py-4 px-6 mb-4 rounded-full border-2 border-green-600 text-green-600 bg-white font-medium text-center transition-all duration-200 hover:bg-green-600 hover:text-white">
+            <a href="{{ route('mobile.attendance.start') }}" class="block w-full py-4 px-6 mb-4 rounded-full border-2 border-green-600 text-green-600 bg-white font-medium text-center transition-all duration-200 hover:bg-green-600 hover:text-white">
                 Mulai Pengantaran
             </a>
 
-            <a href="{{ route('mobile.attendance-end') }}" class="w-full py-4 px-6 mb-4 rounded-full border-2 border-green-600 text-green-600 bg-white font-medium text-center transition-all duration-200 hover:bg-green-600 hover:text-white">
+            <a href="{{ route('mobile.attendance.end') }}" class="w-full py-4 px-6 mb-4 rounded-full border-2 border-green-600 text-green-600 bg-white font-medium text-center transition-all duration-200 hover:bg-green-600 hover:text-white">
                 Selesai Pengantaran
             </a>
 
-            <a href="#" class="w-full py-4 px-6 mb-4 rounded-full border-2 border-green-600 text-green-600 bg-white font-medium text-center transition-all duration-200 hover:bg-green-600 hover:text-white">
+            <a href="{{ route('mobile.attendance.history') }}" class="w-full py-4 px-6 mb-4 rounded-full border-2 border-green-600 text-green-600 bg-white font-medium text-center transition-all duration-200 hover:bg-green-600 hover:text-white">
                 Riwayat
             </a>
         </div>
-
-        <!-- Bottom dotted line -->
-        <div class="border-t-2 border-dotted border-gray-300 mt-8"></div>
     </div>
 
     <script>

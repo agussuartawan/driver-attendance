@@ -1,7 +1,7 @@
 @extends('layouts.mobile')
 @php($showNavbar = false)
 
-@section('title', 'Mulai Pengantaran')
+@section('title', 'Absensi')
 
 @section('content')
     <div class="p-6">
@@ -9,8 +9,8 @@
         <div class="bg-gradient-to-br from-green-600 to-green-500 text-white p-4 rounded-lg mb-6 relative overflow-hidden">
             <div class="flex items-center justify-between relative z-10">
                 <div class="text-sm">
-                    <div class="font-medium text-xs">Selamat bekerja Budi,</div>
-                    <div class="text-green-100 text-xs">Hati-hati dijalan!</div>
+                    <div class="font-medium text-xs">Terima kasih untuk hari ini Budi</div>
+                    <div class="text-green-100 text-xs">Selamat istirahat!</div>
                 </div>
                 <div class="text-right">
                     <a href="{{ route('mobile.attendance') }}" class="mt-2 px-4 py-2 bg-white text-green-600 border-2 border-green-600 rounded-full text-sm font-medium hover:bg-green-600 hover:text-white transition-colors">
@@ -39,7 +39,7 @@
             </div>
             <div class="flex justify-between">
                 <span>Status orderan :</span>
-                <span class="text-orange-600">Mulai mengantar</span>
+                <span class="text-orange-600">Selesai mengantar</span>
             </div>
             <div class="flex justify-between">
                 <span>Alamat :</span>
@@ -59,8 +59,9 @@
         <!-- Camera Section -->
         <div class="mb-6">
             <div class="text-center mb-4">
-                <span class="text-green-800 font-medium text-xs">Jangan Lupa </span>
+                <span class="text-green-800 font-medium text-xs">Tetap</span>
                 <span class="text-green-800 font-dancing-script text-md">Senyum!</span>
+                <span class="text-green-800 font-medium text-xs">meskipun lelah yaa</span>
             </div>
 
             <!-- Camera Box -->
@@ -98,7 +99,7 @@
         <!-- Start Delivery Button -->
         <div class="mb-6">
             <button class="w-full py-4 px-2 text-md rounded-full border-2 border-green-600 text-green-600 bg-white font-medium text-center transition-all duration-200 hover:bg-green-600 hover:text-white">
-                Mulai Pengantaran
+                Selesai Pengantaran
             </button>
         </div>
 

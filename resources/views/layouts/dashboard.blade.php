@@ -123,12 +123,12 @@
                         </a>
 
                         <a href="{{ route('receipt') }}" class="flex items-center gap-4 px-6 py-2 text-green-600 hover:bg-green-50 hover:text-green-700 hover:shadow-lg hover:scale-105 hover:translate-x-1 transition-all duration-300 ease-in-out rounded-xl mx-2 {{ str_contains(request()->route()->getName(), 'receipt') ? 'bg-green-100 text-green-700 font-medium shadow-sm' : '' }}">
-                            <x-icons.heroicon name="calendar" />
+                            <x-icons.heroicon name="document" />
                             <span class="font-medium">NOTA BIAYA</span>
                         </a>
 
                         <a href="{{ route('report.attendance') }}" class="flex items-center gap-4 px-6 py-2 text-green-600 hover:bg-green-50 hover:text-green-700 hover:shadow-lg hover:scale-105 hover:translate-x-1 transition-all duration-300 ease-in-out rounded-xl mx-2 {{ str_contains(request()->route()->getName(), 'report.attendance') ? 'bg-green-100 text-green-700 font-medium shadow-sm' : '' }}">
-                            <x-icons.heroicon name="calendar" />
+                            <x-icons.heroicon name="folder" />
                             <span class="font-medium">LAPORAN ABSENSI</span>
                         </a>
                     </div>

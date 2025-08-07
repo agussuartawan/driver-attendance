@@ -3,7 +3,12 @@
 
 @section('content')
     <!-- Page Title -->
-    <h1 class="text-3xl font-bold text-gray-700 mb-8">{{ $employee ? 'Edit Karyawan' : 'Tambah Karyawan' }}</h1>
+    <div class="flex justify-between items-center gap-4 mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900">{{ $employee ? 'Edit Karyawan' : 'Tambah Karyawan' }}</h1>
+            <p class="text-gray-600 mt-1">Tambahkan atau edit data karyawan</p>
+        </div>
+    </div>
 
     <div class="flex bg-white p-6 rounded-lg shadow-md max-w-2xl">
         <form action="{{ $employee ? route('employee.form.edit', ['employee' => $employee]) : route('employee.form.add') }}" class="w-full grid grid-cols-1 gap-6" method="post" enctype="multipart/form-data">

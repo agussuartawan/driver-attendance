@@ -50,7 +50,12 @@
 
 @section('content')
     <!-- Page Title -->
-    <h1 class="text-3xl font-bold text-gray-700 mb-8">DATA KARYAWAN</h1>
+    <div class="flex justify-between items-center gap-4 mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900">Data Karyawan</h1>
+            <p class="text-gray-600 mt-1">Informasi lengkap data karyawan</p>
+        </div>
+    </div>
 
     <div class="grid grid-cols-1 gap-6">
         <x-data-table

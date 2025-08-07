@@ -4,36 +4,33 @@
 
 @section('content')
     <!-- Page Title -->
-    <h1 class="text-3xl font-bold text-gray-700 mb-8">NOTA BIAYA</h1>
+    <div class="flex justify-between items-center gap-4 mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900">Nota Biaya</h1>
+            <p class="text-gray-600 mt-1">Informasi lengkap nota biaya</p>
+        </div>
+    </div>
 
     <div class="grid grid-cols-1 gap-6">
         @php
             $columns = [
-                ['key' => 'name', 'label' => 'Nama', 'class' => 'font-medium text-gray-900'],
-                ['key' => 'position', 'label' => 'Jabatan'],
-                ['key' => 'email', 'label' => 'Email'],
-                ['key' => 'phone', 'label' => 'Telepon'],
-                ['key' => 'status', 'label' => 'Status', 'type' => 'status'],
-                ['key' => 'join_date', 'label' => 'Tanggal Bergabung', 'type' => 'date', 'format' => 'd M Y']
+                ['key' => 'user', 'label' => 'Nama', 'class' => 'font-medium text-gray-900'],
+                ['key' => 'date', 'label' => 'Tanggal', 'type' => 'date', 'format' => 'd M Y'],
+                ['key' => 'amount', 'label' => 'Jumlah', 'type' => 'currency', 'format' => 'Rp'],
+                ['key' => 'image', 'label' => 'Bukti', 'type' => 'html'],
             ];
 
-            $data = [
-                [
-                    'id' => 1,
-                    'name' => 'Ahmad Rizki',
-                    'position' => 'Software Engineer',
-                    'email' => 'ahmad.rizki@company.com',
-                    'phone' => '0812-3456-7890',
-                    'status' => ['text' => 'Aktif', 'class' => 'bg-green-100 text-green-800'],
-                    'join_date' => '2023-01-15'
-                ]
-            ];
+            $data = $receipts->through(function ($receipt) {
+                $receipt->image = '<a href="' . asset('storage/' . $receipt->image) . '" target="_blank"><img src="' . asset('storage/' . $receipt->image) . '" alt="Bukti" class="w-16 h-16"></a>';
+                return $receipt;
+            })
         @endphp
 
         <x-data-table
             :columns="$columns"
             :data="$data"
-            table-id="employeeTable"
+            table-id="receiptTable"
+            :date-range="true"
             search-placeholder="Cari nota biaya"
         />
     </div>

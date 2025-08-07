@@ -34,7 +34,8 @@
                 [
                     'label' => 'Unduh Laporan',
                     'url' => route('report.attendance.export'),
-                    'class' => 'bg-green-600 hover:bg-green-700'
+                    'class' => 'bg-green-600 hover:bg-green-700',
+                    'icon' => '<x-icons.heroicon name="download-mini" />'
                 ]
             ];
         @endphp

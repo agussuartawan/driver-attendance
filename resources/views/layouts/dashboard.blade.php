@@ -50,18 +50,18 @@
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="flex items-center gap-2 text-sm border border-white/20 px-4 py-2 hover:bg-white/10 rounded-xl transition-all duration-200 group">
-                    <x-icons.heroicon name="logout" class="w-5 h-5 group-hover:scale-110 transition-transform text-white" />
+                    <x-icons.heroicon name="logout" class="group-hover:scale-110 transition-transform text-white" />
                     Logout
                     </button>
                 </form>
                 <div class="flex items-center gap-0">
                     <!-- Search Icon -->
                     <button class="p-3 hover:bg-white/10 rounded-xl transition-all duration-200 group">
-                        <x-icons.heroicon name="magnifying-glass" class="w-5 h-5 group-hover:scale-110 transition-transform" />
+                        <x-icons.heroicon name="magnifying-glass" class="group-hover:scale-110 transition-transform" />
                     </button>
                     <!-- Notification Icon -->
                     <button class="p-3 hover:bg-white/10 rounded-xl transition-all duration-200 group relative">
-                        <x-icons.heroicon name="bell" class="w-5 h-5 group-hover:scale-110 transition-transform" />
+                        <x-icons.heroicon name="bell" class="group-hover:scale-110 transition-transform" />
                         <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-400 rounded-full border-2 border-white"></span>
                     </button>
                 </div>
@@ -86,7 +86,7 @@
                 <div class="p-6 border-b border-gray-100">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
-                            <x-icons.heroicon name="chart-bar" class="w-6 h-6 text-green-600" />
+                            <x-icons.heroicon name="chart-bar" class="text-green-600" />
                         </div>
                         <div>
                             <h2 class="font-bold text-gray-900">Senyum Dashboard</h2>
@@ -99,7 +99,7 @@
                     <!-- Dashboard Section -->
                     <div class="mb-4">
                         <a href="{{ route('dashboard') }}" class="flex items-center gap-4 px-6 py-4 text-green-600 hover:bg-green-50 hover:text-green-700 hover:shadow-lg hover:scale-105 hover:translate-x-1 transition-all duration-300 ease-in-out rounded-xl mx-2 {{ request()->routeIs('dashboard') ? 'bg-green-100 text-green-700 font-medium shadow-sm' : '' }}">
-                            <x-icons.heroicon name="chart-bar" class="w-5 h-5" />
+                            <x-icons.heroicon name="pie" />
                             <span class="font-medium">DASHBOARD</span>
                         </a>
                     </div>
@@ -113,22 +113,22 @@
 
                     <div class="space-y-2">
                         <a href="{{ route('employee') }}" class="flex items-center gap-4 px-6 py-2 text-green-600 hover:bg-green-50 hover:text-green-700 hover:shadow-lg hover:scale-105 hover:translate-x-1 transition-all duration-300 ease-in-out rounded-xl mx-2 {{ str_contains(request()->route()->getName(), 'employee') ? 'bg-green-100 text-green-700 font-medium shadow-sm' : '' }}">
-                            <x-icons.heroicon name="users" class="w-5 h-5" />
+                            <x-icons.heroicon name="users" />
                             <span class="font-medium">DATA KARYAWAN</span>
                         </a>
 
                         <a href="{{ route('schedule') }}" class="flex items-center gap-4 px-6 py-2 text-green-600 hover:bg-green-50 hover:text-green-700 hover:shadow-lg hover:scale-105 hover:translate-x-1 transition-all duration-300 ease-in-out rounded-xl mx-2 {{ str_contains(request()->route()->getName(), 'schedule') ? 'bg-green-100 text-green-700 font-medium shadow-sm' : '' }}">
-                            <x-icons.heroicon name="calendar" class="w-5 h-5" />
+                            <x-icons.heroicon name="calendar" />
                             <span class="font-medium">JADWAL TAMU</span>
                         </a>
 
                         <a href="{{ route('receipt') }}" class="flex items-center gap-4 px-6 py-2 text-green-600 hover:bg-green-50 hover:text-green-700 hover:shadow-lg hover:scale-105 hover:translate-x-1 transition-all duration-300 ease-in-out rounded-xl mx-2 {{ str_contains(request()->route()->getName(), 'receipt') ? 'bg-green-100 text-green-700 font-medium shadow-sm' : '' }}">
-                            <x-icons.heroicon name="document-text" class="w-5 h-5" />
+                            <x-icons.heroicon name="calendar" />
                             <span class="font-medium">NOTA BIAYA</span>
                         </a>
 
                         <a href="{{ route('report.attendance') }}" class="flex items-center gap-4 px-6 py-2 text-green-600 hover:bg-green-50 hover:text-green-700 hover:shadow-lg hover:scale-105 hover:translate-x-1 transition-all duration-300 ease-in-out rounded-xl mx-2 {{ str_contains(request()->route()->getName(), 'report.attendance') ? 'bg-green-100 text-green-700 font-medium shadow-sm' : '' }}">
-                            <x-icons.heroicon name="clipboard-list" class="w-5 h-5" />
+                            <x-icons.heroicon name="calendar" />
                             <span class="font-medium">LAPORAN ABSENSI</span>
                         </a>
                     </div>

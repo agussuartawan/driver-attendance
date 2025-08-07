@@ -10,7 +10,7 @@
             <p class="text-gray-600 mt-1">Tambahkan atau edit jadwal perjalanan tamu</p>
         </div>
         <a href="{{ route('schedule') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors" title="Kembali">
-            <x-icons.heroicon name="arrow-left" class="w-4 h-4 mr-2" /> Kembali
+            <x-icons.heroicon name="arrow-left" class="mr-2" /> Kembali
         </a>
      </div>
 

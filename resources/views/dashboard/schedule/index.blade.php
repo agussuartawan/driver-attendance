@@ -31,7 +31,8 @@
                 [
                     'label' => 'Edit',
                     'url' => fn($row) => route('schedule.form.edit', ['schedule' => $row]),
-                    'class' => 'bg-blue-600 hover:bg-blue-700'
+                    'class' => 'bg-blue-600 hover:bg-blue-700',
+                    'icon' => '<x-icons.heroicon name="pencil-micro" class="mr-1" />'
                 ],
                 [
                     'type' => 'form',
@@ -39,12 +40,14 @@
                     'action' => fn($row) => route('schedule.destroy', ['schedule' => $row]),
                     'class' => 'bg-red-600 hover:bg-red-700',
                     'method' => 'DELETE',
-                    'confirm' => 'Apakah Anda yakin ingin menghapus jadwal tamu ini?'
+                    'confirm' => 'Apakah Anda yakin ingin menghapus jadwal tamu ini?',
+                    'icon' => '<x-icons.heroicon name="trash-micro" class="mr-1" />'
                 ],
                 [
                     'label' => 'Detail',
                     'url' => fn($row) => route('schedule.detail', ['schedule' => $row]),
-                    'class' => 'bg-green-600 hover:bg-green-700'
+                    'class' => 'bg-green-600 hover:bg-green-700',
+                    'icon' => '<x-icons.heroicon name="eye-micro" class="mr-1" />'
                 ],
             ];
 
@@ -52,7 +55,8 @@
                 [
                     'label' => 'Tambah Jadwal Tamu',
                     'url' => route('schedule.form.add'),
-                    'class' => 'bg-green-600 hover:bg-green-700'
+                    'class' => 'bg-green-600 hover:bg-green-700',
+                    'icon' => '<x-icons.heroicon name="plus-mini" />'
                 ],
             ];
         @endphp

@@ -16,7 +16,8 @@
         [
             'label' => 'Edit',
             'url' => fn($row) => route('employee.form.edit', ['employee' => $row]),
-            'class' => 'bg-blue-600 hover:bg-blue-700'
+            'class' => 'bg-blue-600 hover:bg-blue-700',
+            'icon' => '<x-icons.heroicon name="pencil-micro" class="mr-1" />'
         ],
         [
             'type' => 'form',
@@ -27,6 +28,9 @@
             'confirm' => fn($row) => $row['status']['text'] == 'Aktif'
                 ? 'Apakah Anda yakin ingin menonaktifkan karyawan ini?'
                 : 'Apakah Anda yakin ingin mengaktifkan karyawan ini?',
+            'icon' => fn($row) => $row['status']['text'] == 'Aktif'
+                ? '<x-icons.heroicon name="ban-circle-micro" class="mr-1" />'
+                : '<x-icons.heroicon name="check-circle-micro" class="mr-1" />'
         ]
     ];
 
@@ -43,7 +47,8 @@
         [
             'label' => 'Tambah Karyawan',
             'url' => route('employee.form.add'),
-            'class' => 'bg-green-600 hover:bg-green-700'
+            'class' => 'bg-green-600 hover:bg-green-700',
+            'icon' => '<x-icons.heroicon name="plus-mini" />'
         ]
     ];
 @endphp

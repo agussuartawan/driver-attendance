@@ -13,9 +13,9 @@
 
     <!-- Top Row - Key Metrics -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <x-dashboard.metric-card :value="$totalDriver" label="JUMLAH SUPIR AKTIF" />
-        <x-dashboard.metric-card :value="$totalSchedule" label="JUMLAH JADWAL" />
-        <x-dashboard.metric-card :value="'Rp ' . number_format($totalReceipt, 0, ',', '.')" label="TOTAL PENGELUARAN" />
+        <x-dashboard.metric-card :value="$totalDriver" label="Jumlah Supir Aktif" icon-name="users" size="8" />
+        <x-dashboard.metric-card :value="$totalSchedule" label="Jumlah Jadwal" icon-name="calendar" size="8" />
+        <x-dashboard.metric-card :value="'Rp ' . number_format($totalReceipt, 0, ',', '.')" label="Total Pengeluaran" icon-name="currency-dollar" size="8" />
     </div>
 
     <!-- Bottom Row - Charts -->
@@ -35,7 +35,7 @@
                     @endphp
                     <div class="flex flex-col items-center">
                         <div class="bg-blue-400 hover:bg-blue-500 rounded-t w-8 transition-all duration-300"
-                             style="height: {{ $height }}px;"
+                             style='height: {{ $height }}px'
                              title="{{ $data['monthName'] }}: {{ $data['total'] }} absensi (In: {{ $data['in'] }}, Out: {{ $data['out'] }})">
                         </div>
                         <div class="text-xs text-gray-600 mt-2">{{ $data['month'] }}</div>
@@ -84,9 +84,12 @@
                             $endY = 50 + 50 * sin(deg2rad($endAngle));
                         @endphp
 
-                        <div class="absolute inset-0 rounded-full {{ $color }}"
-                             style="clip-path: polygon(50% 50%, {{ $startX }}% {{ $startY }}%, {{ $endX }}% {{ $endY }}%)">
-                        </div>
+                        <svg class="absolute inset-0 w-full h-full" viewBox="0 0 100 100">
+                            <path
+                                d="M50,50 L{{ $startX }},{{ $startY }} A50,50 0 {{ ($endAngle - $startAngle) > 180 ? 1 : 0 }},1 {{ $endX }},{{ $endY }} Z"
+                                class="{{ $color }}"
+                            />
+                        </svg>
                     @endforeach
 
                     <!-- Center circle -->

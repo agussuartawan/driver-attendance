@@ -16,7 +16,20 @@
         @if(!empty($button))
             <div class="p-6 border-b border-gray-200">
                 @foreach($button as $btn)
-                    <a href="{{ $btn['url'] }}" class="inline-flex items-center px-4 py-2 text-xs font-medium text-white {{ $btn['class'] ?? 'bg-blue-600 hover:bg-blue-700' }} rounded-md transition-colors">
+                    <a href="{{ $btn['url'] }}" class="inline-flex gap-2 items-center px-4 py-2 text-sm font-semibold text-white {{ $btn['class'] ?? 'bg-blue-600 hover:bg-blue-700' }} rounded-md transition-colors">
+                        @if(isset($btn['icon']))
+                            @if(str_contains($btn['icon'], 'x-icons.heroicon'))
+                                @php
+                                    preg_match('/name="([^"]+)"/', $btn['icon'], $matches);
+                                    $iconName = $matches[1] ?? 'question-mark-circle';
+                                    preg_match('/class="([^"]+)"/', $btn['icon'], $matches);
+                                    $iconClass = $matches[1] ?? 'mr-2';
+                                @endphp
+                                <x-icons.heroicon :name="$iconName" :class="$iconClass" />
+                            @else
+                                {!! $btn['icon'] !!}
+                            @endif
+                        @endif
                         {{ $btn['label'] }}
                     </a>
                 @endforeach
@@ -105,14 +118,14 @@
                                             <button
                                                 type="button"
                                                 id="applyDateRange-{{ $tableId }}"
-                                                class="flex-1 px-3 py-2 text-xs font-medium text-white bg-green-600 hover:bg-green-700 rounded-md transition-colors"
+                                                class="flex-1 px-3 py-2 text-xs font-semibold text-white bg-green-600 hover:bg-green-700 rounded-md transition-colors"
                                             >
                                                 Terapkan
                                             </button>
                                             <button
                                                 type="button"
                                                 id="clearDateRange-{{ $tableId }}"
-                                                class="flex-1 px-3 py-2 text-xs font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+                                                class="flex-1 px-3 py-2 text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
                                             >
                                                 Bersihkan
                                             </button>
@@ -169,10 +182,28 @@
                                         $confirm = is_callable($action['confirm'] ?? null) ? $action['confirm']($row) : ($action['confirm'] ?? null);
                                     @endphp
 
+                                    @php
+                                        // Handle icon for action
+                                        $icon = is_callable($action['icon'] ?? null) ? $action['icon']($row) : ($action['icon'] ?? null);
+                                    @endphp
+
                                     @if(isset($action['type']) && $action['type'] === 'link')
                                         {{-- Link Action --}}
                                         <a href="{{ $action['url']($row) }}"
                                            class="inline-flex items-center px-3 py-1 text-xs font-medium text-white {{ $class }} rounded-md hover:opacity-80 transition-colors {{ $loop->last ? '' : 'mr-2' }}">
+                                            @if($icon)
+                                                @if(str_contains($icon, 'x-icons.heroicon'))
+                                                    @php
+                                                        preg_match('/name="([^"]+)"/', $icon, $matches);
+                                                        $iconName = $matches[1] ?? 'question-mark-circle';
+                                                        preg_match('/class="([^"]+)"/', $icon, $matches);
+                                                        $iconClass = $matches[1] ?? 'mr-1';
+                                                    @endphp
+                                                    <x-icons.heroicon :name="$iconName" :class="$iconClass" />
+                                                @else
+                                                    {!! $icon !!}
+                                                @endif
+                                            @endif
                                             {{ $label }}
                                         </a>
                                     @elseif(isset($action['type']) && $action['type'] === 'button')
@@ -181,6 +212,19 @@
                                             type="button"
                                             onclick="{{ $action['onclick']($row) }}"
                                             class="inline-flex items-center px-3 py-1 text-xs font-medium text-white {{ $class }} rounded-md hover:opacity-80 transition-colors {{ $loop->last ? '' : 'mr-2' }}">
+                                            @if($icon)
+                                                @if(str_contains($icon, 'x-icons.heroicon'))
+                                                    @php
+                                                        preg_match('/name="([^"]+)"/', $icon, $matches);
+                                                        $iconName = $matches[1] ?? 'question-mark-circle';
+                                                        preg_match('/class="([^"]+)"/', $icon, $matches);
+                                                        $iconClass = $matches[1] ?? 'mr-1';
+                                                    @endphp
+                                                    <x-icons.heroicon :name="$iconName" :class="$iconClass" />
+                                                @else
+                                                    {!! $icon !!}
+                                                @endif
+                                            @endif
                                             {{ $label }}
                                         </button>
                                     @elseif(isset($action['type']) && $action['type'] === 'form')
@@ -197,6 +241,19 @@
                                                 type="submit"
                                                 @if($confirm) onclick="return confirm('{{ $confirm }}')" @endif
                                                 class="inline-flex items-center px-3 py-1 text-xs font-medium text-white {{ $class }} rounded-md hover:opacity-80 transition-colors {{ $loop->last ? '' : 'mr-2' }}">
+                                                @if($icon)
+                                                    @if(str_contains($icon, 'x-icons.heroicon'))
+                                                        @php
+                                                            preg_match('/name="([^"]+)"/', $icon, $matches);
+                                                            $iconName = $matches[1] ?? 'question-mark-circle';
+                                                            preg_match('/class="([^"]+)"/', $icon, $matches);
+                                                            $iconClass = $matches[1] ?? 'mr-1';
+                                                        @endphp
+                                                        <x-icons.heroicon :name="$iconName" :class="$iconClass" />
+                                                    @else
+                                                        {!! $icon !!}
+                                                    @endif
+                                                @endif
                                                 {{ $label }}
                                             </button>
                                         </form>
@@ -204,6 +261,19 @@
                                         {{-- Default Link Action (Backward Compatibility) --}}
                                         <a href="{{ $action['url']($row) }}"
                                            class="inline-flex items-center px-3 py-1 text-xs font-medium text-white {{ $class }} rounded-md hover:opacity-80 transition-colors {{ $loop->last ? '' : 'mr-2' }}">
+                                            @if($icon)
+                                                @if(str_contains($icon, 'x-icons.heroicon'))
+                                                    @php
+                                                        preg_match('/name="([^"]+)"/', $icon, $matches);
+                                                        $iconName = $matches[1] ?? 'question-mark-circle';
+                                                        preg_match('/class="([^"]+)"/', $icon, $matches);
+                                                        $iconClass = $matches[1] ?? 'mr-1';
+                                                    @endphp
+                                                    <x-icons.heroicon :name="$iconName" :class="$iconClass" />
+                                                @else
+                                                    {!! $icon !!}
+                                                @endif
+                                            @endif
                                             {{ $label }}
                                         </a>
                                     @endif

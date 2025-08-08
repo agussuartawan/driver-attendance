@@ -40,7 +40,12 @@ Route::middleware('auth')->group(function () {
 
         // Receipt routes
         Route::group(['prefix' => 'receipt'], function () {
-            Route::get('/', [ReceiptController::class, 'index'])->name('receipt');
+            Route::get('/', [ReceiptController::class, 'dashboard'])->name('receipt');
+            Route::get('/add', [ReceiptController::class, 'add'])->name('receipt.add');
+            Route::post('/store', [ReceiptController::class, 'store'])->name('receipt.store');
+            Route::get('/history', [ReceiptController::class, 'history'])->name('receipt.history');
+            Route::get('/{receipt}', [ReceiptController::class, 'show'])->name('receipt.show');
+            Route::delete('/{receipt}', [ReceiptController::class, 'destroy'])->name('receipt.destroy');
         });
     });
 
@@ -48,7 +53,6 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'report', 'middleware' => ['role:admin|manager']], function () {
         // Dashboard routes
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
         Route::get('/attendance', [AttendanceController::class, 'report'])->name('report.attendance');
         Route::get('/attendance/export', [AttendanceController::class, 'export'])->name('report.attendance.export');
     });
@@ -56,34 +60,21 @@ Route::middleware('auth')->group(function () {
     // Mobile routes
     Route::group(['prefix' => 'mobile', 'middleware' => ['role:driver']], function () {
         Route::group(['prefix' => 'attendance'], function () {
-            Route::get('/', function () {
-                return view('mobile.attendance.index');
-            })->name('mobile.attendance');
-
+            Route::get('/', [AttendanceController::class, 'driverHome'])->name('mobile.attendance');
             Route::get('/schedules', [ScheduleController::class, 'getDriverSchedules'])->name('mobile.attendance.schedule');
             Route::get('/{type}/{schedule}', [AttendanceController::class, 'form'])->name('mobile.attendance.form');
             Route::post('/{type}/{schedule}', [AttendanceController::class, 'create'])->name('mobile.attendance.create');
-
             Route::get('/history', [AttendanceController::class, 'getDriverAttendance'])->name('mobile.attendance.history');
         });
 
         Route::group(['prefix' => 'receipt'], function () {
-            Route::get('/', function () {
-                return view('mobile.receipt.index');
-            })->name('mobile.receipt');
-
-            Route::get('/add', function () {
-                return view('mobile.receipt.add');
-            })->name('mobile.receipt.add');
-
-            Route::get('/history', function () {
-                return view('mobile.receipt.history');
-            })->name('mobile.receipt.history');
+            Route::get('/', [ReceiptController::class, 'index'])->name('mobile.receipt');
+            Route::get('/add', [ReceiptController::class, 'add'])->name('mobile.receipt.add');
+            Route::post('/store', [ReceiptController::class, 'store'])->name('mobile.receipt.store');
+            Route::get('/history', [ReceiptController::class, 'history'])->name('mobile.receipt.history');
+            Route::get('/{receipt}', [ReceiptController::class, 'show'])->name('mobile.receipt.show');
+            Route::delete('/{receipt}', [ReceiptController::class, 'destroy'])->name('mobile.receipt.destroy');
         });
-
-        Route::get('/report', function () {
-            return view('mobile.report');
-        })->name('mobile.report');
 
         Route::get('/profile', function () {
             return view('mobile.profile.index');

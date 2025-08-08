@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class AttendanceController extends Controller
@@ -22,7 +23,9 @@ class AttendanceController extends Controller
             $attendances->whereBetween('date', [$request->start_date, $request->end_date]);
         }
         if ($request->has('search')) {
-            $attendances->where('employee.name', 'like', '%' . $request->search . '%');
+            $attendances->whereHas('employee', function($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->search . '%');
+            });
         }
 
         $attendances = $attendances->paginate(10);
@@ -64,6 +67,7 @@ class AttendanceController extends Controller
         $data['image'] = $filename;
 
         Attendance::create($data);
+        $schedule->update(['status' => $type == 'in' ? 'in_progress' : 'completed']);
 
         return redirect()->route('mobile.attendance')->with('success', 'Berhasil melakukan absensi');
     }
@@ -196,5 +200,56 @@ class AttendanceController extends Controller
         return view('mobile.attendance.history', [
             'attendances' => $groupedAttendances,
         ]);
+    }
+
+    public function driverHome(Request $request)
+    {
+        $scheduleController = new ScheduleController();
+        $recentSchedule = $scheduleController->getRecentSchedule();
+
+        // Hitung total jam kerja
+        $attendances = Attendance::where('user_id', Auth::id())
+            ->with('schedule')
+            ->orderBy('date', 'desc')
+            ->get();
+
+        $totalWorkingHours = 0;
+        $totalDeliveries = 0;
+
+        // Group by schedule_id dan hitung jam kerja per schedule
+        $groupedAttendances = $attendances->groupBy('schedule_id');
+
+        foreach ($groupedAttendances as $scheduleId => $scheduleAttendances) {
+            $inAttendance = $scheduleAttendances->where('type', 'in')->first();
+            $outAttendance = $scheduleAttendances->where('type', 'out')->first();
+
+            // Hanya hitung jika ada in dan out attendance
+            if ($inAttendance && $outAttendance) {
+                $startTime = \Carbon\Carbon::parse($inAttendance->date);
+                $endTime = \Carbon\Carbon::parse($outAttendance->date);
+
+                // Hitung durasi dalam jam (dengan decimal)
+                $durationInHours = $startTime->diffInMinutes($endTime) / 60;
+                $totalWorkingHours += $durationInHours;
+                $totalDeliveries++;
+            }
+        }
+
+        // Format jam kerja
+        $workingHoursFormatted = '';
+        $totalHours = (int) $totalWorkingHours;
+        $totalMinutes = (int) (($totalWorkingHours - $totalHours) * 60);
+
+        if ($totalHours > 0) {
+            $workingHoursFormatted .= $totalHours . 'j ';
+        }
+        if ($totalMinutes > 0) {
+            $workingHoursFormatted .= $totalMinutes . 'm';
+        }
+        if (empty($workingHoursFormatted)) {
+            $workingHoursFormatted = '0j';
+        }
+
+        return view('mobile.attendance.index', compact('recentSchedule', 'workingHoursFormatted', 'totalDeliveries'));
     }
 }

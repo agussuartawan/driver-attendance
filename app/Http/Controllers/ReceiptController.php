@@ -4,17 +4,115 @@ namespace App\Http\Controllers;
 
 use App\Models\Receipt;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReceiptController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $receipts = Receipt::with('user')->orderBy('date', 'desc');
-        if ($request->has('start_date') && $request->has('end_date')) {
-            $receipts->whereBetween('date', [$request->start_date, $request->end_date]);
+        // Get receipt statistics
+        $totalUploads = Receipt::where('user_id', Auth::id())->count();
+        $monthlyUploads = Receipt::where('user_id', Auth::id())
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->count();
+
+        // Get recent receipts
+        $recentReceipts = Receipt::where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        return view('mobile.receipt.index', compact('totalUploads', 'monthlyUploads', 'recentReceipts'));
+    }
+
+    public function add()
+    {
+        return view('mobile.receipt.add');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'amount' => 'required|numeric|min:0',
+            'category' => 'required|string|max:100',
+            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $image = $request->file('image');
+        $fileName = time() . '_' . $image->getClientOriginalName();
+        $filePath = $image->storeAs('receipts', $fileName, 'public');
+
+        Receipt::create([
+            'user_id' => Auth::id(),
+            'amount' => $request->amount,
+            'category' => $request->category,
+            'image' => $filePath,
+            'date' => now()
+        ]);
+
+        return redirect()->route('mobile.receipt')->with('success', 'Nota biaya berhasil diupload');
+    }
+
+    public function history()
+    {
+        $receipts = Receipt::where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        // Calculate additional statistics
+        $monthlyCount = Receipt::where('user_id', Auth::id())
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->count();
+
+        $totalAmount = Receipt::where('user_id', Auth::id())
+            ->sum('amount');
+
+        return view('mobile.receipt.history', compact('receipts', 'monthlyCount', 'totalAmount'));
+    }
+
+    public function show(Receipt $receipt)
+    {
+        // Ensure user can only view their own receipts
+        if ($receipt->user_id !== Auth::id()) {
+            abort(403);
         }
+
+        return view('mobile.receipt.show', compact('receipt'));
+    }
+
+    public function destroy(Receipt $receipt)
+    {
+        // Ensure user can only delete their own receipts
+        if ($receipt->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        // Delete file from storage
+        if (file_exists(storage_path('app/public/' . $receipt->image))) {
+            unlink(storage_path('app/public/' . $receipt->image));
+        }
+
+        $receipt->delete();
+
+        return redirect()->route('mobile.receipt.history')->with('success', 'Nota biaya berhasil dihapus');
+    }
+
+    public function dashboard(Request $request)
+    {
+        $receipts = Receipt::with('user:id,name')->orderBy('created_at', 'desc');
+
         if ($request->has('search')) {
-            $receipts->where('user.name', 'like', '%' . $request->search . '%');
+            $receipts->whereHas('user', function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->search . '%');
+            });
+        }
+        if ($request->has('start_date') && $request->start_date) {
+            $receipts->whereDate('created_at', '>=', $request->start_date);
+        }
+        if ($request->has('end_date') && $request->end_date) {
+            $receipts->whereDate('created_at', '<=', $request->end_date);
         }
 
         $receipts = $receipts->paginate(10);

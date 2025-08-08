@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ScheduleFormRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class ScheduleController extends Controller
 {
@@ -67,7 +68,7 @@ class ScheduleController extends Controller
 
     public function getDriverSchedules(Request $request)
     {
-        $userId = auth()->user()->id;
+        $userId = Auth::id();
         $schedules = Schedule::with('attendances')
             ->whereDoesntHave('attendances', function ($query) {
                 $query->where('type', 'out');
@@ -84,5 +85,27 @@ class ScheduleController extends Controller
         });
 
         return view('mobile.attendance.schedule', compact('schedules'));
+    }
+
+    public function getRecentSchedule()
+    {
+        $userId = Auth::id();
+        $recentSchedule = Schedule::with('attendances')
+            ->where('driver_id', $userId)
+            ->whereDoesntHave('attendances', function ($query) {
+                $query->where('type', 'out');
+            })
+            ->orderBy('start_date', 'desc')
+            ->first();
+
+        if ($recentSchedule) {
+            $recentSchedule->can_start = !$recentSchedule->attendances()->where('type', 'in')->exists();
+            $recentSchedule->can_end = $recentSchedule->attendances()->where('type', 'in')->exists() &&
+                                     !$recentSchedule->attendances()->where('type', 'out')->exists();
+
+            $recentSchedule->type = $recentSchedule->can_start ? 'in' : ($recentSchedule->can_end ? 'out' : null);
+        }
+
+        return $recentSchedule;
     }
 }

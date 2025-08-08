@@ -32,7 +32,7 @@
 
                 <div class="flex justify-between items-center py-2 border-b border-gray-100">
                     <span class="text-gray-600">Bergabung Sejak</span>
-                    <span class="text-gray-800 font-medium">-</span>
+                    <span class="text-gray-800 font-medium">{{ auth()->user()->created_at->format('d M Y') }}</span>
                 </div>
 
                 <div class="flex justify-between items-center py-2">

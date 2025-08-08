@@ -12,4 +12,9 @@ class Attendance extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function schedule()
+    {
+        return $this->belongsTo(Schedule::class);
+    }
 }

@@ -64,4 +64,25 @@ class ScheduleController extends Controller
     {
         return view('dashboard.schedule.detail', compact('schedule'));
     }
+
+    public function getDriverSchedules(Request $request)
+    {
+        $userId = auth()->user()->id;
+        $schedules = Schedule::with('attendances')
+            ->whereDoesntHave('attendances', function ($query) {
+                $query->where('type', 'out');
+            })
+            ->where('driver_id', $userId)
+            ->orderBy($request->type == 'in' ? 'start_date' : 'end_date', 'desc')
+            ->get();
+
+        $schedules = $schedules->map(function ($schedule) {
+            $schedule->type = $schedule->attendances->first() ? $schedule->attendances->first()->type : null;
+            return $schedule;
+        })->filter(function ($schedule) use ($request) {
+            return $request->type == 'in' ? $schedule->type == null : $schedule->type == 'in';
+        });
+
+        return view('mobile.attendance.schedule', compact('schedules'));
+    }
 }

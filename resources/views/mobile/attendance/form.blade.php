@@ -9,8 +9,20 @@
         <div class="bg-gradient-to-br from-green-600 to-green-500 text-white p-4 rounded-lg mb-6 relative overflow-hidden">
             <div class="flex items-center justify-between relative z-10">
                 <div class="text-sm">
-                    <div class="font-medium text-xs">Selamat bekerja {{ auth()->user()->name }},</div>
-                    <div class="text-green-100 text-xs">Hati-hati dijalan!</div>
+                    <div class="font-medium text-xs">
+                        @if($type === 'in')
+                            Selamat bekerja {{ auth()->user()->name }},
+                        @else
+                            Terima kasih untuk hari ini {{ auth()->user()->name }}
+                        @endif
+                    </div>
+                    <div class="text-green-100 text-xs">
+                        @if($type === 'in')
+                            Hati-hati dijalan!
+                        @else
+                            Selamat istirahat!
+                        @endif
+                    </div>
                 </div>
                 <div class="text-right">
                     <a href="{{ route('mobile.attendance') }}" class="mt-2 px-4 py-2 bg-white text-green-600 border-2 border-green-600 rounded-full text-sm font-medium hover:bg-green-600 hover:text-white transition-colors">
@@ -43,14 +55,22 @@
                     <span>{{ auth()->user()->name }}</span>
                     <span>{{ now()->format('d F Y') }}</span>
                     <span id="current-time">{{ now()->format('H.i') }}</span>
-                    <span class="{{ $isLate ? 'text-orange-600' : 'text-green-600' }}">{{ $status }}</span>
+                    <span class="{{ $isDanger ? 'text-orange-600' : 'text-green-600' }}">
+                        {{ $status }}
+                    </span>
                     <span id="current-address" class="text-green-700">Mendapatkan lokasi...</span>
                 </div>
             </div>
         </div>
 
         <div class="space-y-2 text-green-800 font-medium text-xs mb-6 p-4 bg-green-50 rounded-lg">
-            <label class="text-green-800 font-semibold text-sm mb-2">Data Penjemputan</label>
+            <label class="text-green-800 font-semibold text-sm mb-2">
+                @if($type === 'in')
+                    Data Penjemputan
+                @else
+                    Data Pengantaran
+                @endif
+            </label>
             <div class="grid grid-cols-12 gap-2">
                 <div class="col-span-4 flex flex-col items-start justify-start gap-1">
                     <span>Nama Tamu :</span>
@@ -59,7 +79,13 @@
 
                 <div class="col-span-8 flex flex-col items-end justify-end text-right gap-1">
                     <span>{{ $schedule->customer_name }} ({{ $schedule->customer_phone }})</span>
-                    <span>{{ $schedule->start_location }}</span>
+                    <span>
+                        @if($type === 'in')
+                            {{ $schedule->start_location }}
+                        @else
+                            {{ $schedule->end_location }}
+                        @endif
+                    </span>
                 </div>
             </div>
         </div>
@@ -70,8 +96,17 @@
         <!-- Camera Section -->
         <div class="mb-6">
             <div class="text-center mb-4">
-                <span class="text-green-800 font-medium text-xs">Jangan Lupa </span>
+                <span class="text-green-800 font-medium text-xs">
+                    @if($type === 'in')
+                        Jangan Lupa
+                    @else
+                        Tetap
+                    @endif
+                </span>
                 <span class="text-green-800 font-dancing-script text-md">Senyum!</span>
+                @if($type === 'out')
+                    <span class="text-green-800 font-medium text-xs">meskipun lelah yaa</span>
+                @endif
             </div>
 
             <!-- Camera Box -->
@@ -110,21 +145,37 @@
             </div>
         </div>
 
-        <!-- Start Delivery Button -->
-        <form action="{{ route('mobile.attendance.create', ['type' => 'in', 'schedule' => $schedule]) }}" method="post" class="mb-6">
+        <!-- Submit Button -->
+        <form action="{{ route('mobile.attendance.create', ['type' => $type, 'schedule' => $schedule]) }}" method="post" class="mb-6">
             @csrf
             <input type="hidden" name="location" id="location">
             <input type="hidden" name="latitude" id="latitude">
             <input type="hidden" name="longitude" id="longitude">
             <input type="hidden" name="image" id="image">
-            <button id="start-delivery-btn" type="submit" disabled class="w-full py-4 px-2 text-md rounded-full border-2 border-green-600 text-green-600 bg-white font-medium text-center transition-all duration-200 hover:bg-green-600 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed">
-                Mulai Pengantaran
+            <button id="submit-btn" type="submit" disabled class="w-full py-4 px-2 text-md rounded-full border-2 border-green-600 text-green-600 bg-white font-medium text-center transition-all duration-200 hover:bg-green-600 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed">
+                @if($type === 'in')
+                    Mulai Pengantaran
+                @else
+                    Selesai Pengantaran
+                @endif
             </button>
             <p id="location-warning" class="mt-2 text-xs text-red-600 hidden">Izin lokasi belum diberikan. Aktifkan izin lokasi untuk melanjutkan.</p>
-            <p id="distance-warning" class="mt-2 text-xs text-red-600 hidden">Anda terlalu jauh dari lokasi penjemputan. Jarak maksimal 100 meter. Silakan mendekati lokasi penjemputan.</p>
+            <p id="distance-warning" class="mt-2 text-xs text-red-600 hidden">
+                @if($type === 'in')
+                    Anda terlalu jauh dari lokasi penjemputan. Jarak maksimal 100 meter. Silakan mendekati lokasi penjemputan.
+                @else
+                    Anda terlalu jauh dari lokasi pengantaran. Jarak maksimal 100 meter. Silakan mendekati lokasi pengantaran.
+                @endif
+            </p>
             <button type="button" id="request-location-permission" class="mt-1 text-xs text-green-700 underline hidden">Aktifkan izin lokasi</button>
         </form>
     </div>
+
+    <!-- Hidden data element for coordinates -->
+    <div id="schedule-data"
+         data-lat="{{ $type === 'in' ? $schedule->start_latitude : $schedule->end_latitude }}"
+         data-lng="{{ $type === 'in' ? $schedule->start_longitude : $schedule->end_longitude }}"
+         style="display: none;"></div>
 
     <!-- Smiley decoration at bottom right -->
     <div class="fixed bottom-20 right-4 w-24 h-24 bg-green-500 rounded-full opacity-80 flex items-center justify-center">
@@ -139,8 +190,8 @@
 
     <script>
         // Schedule coordinates for distance validation
-        const scheduleLat = "{{ $schedule->start_latitude }}" === "" ? null : parseFloat("{{ $schedule->start_latitude }}");
-        const scheduleLng = "{{ $schedule->start_longitude }}" === "" ? null : parseFloat("{{ $schedule->start_longitude }}");
+        const scheduleLat = document.getElementById('schedule-data').dataset.lat === "" ? null : parseFloat(document.getElementById('schedule-data').dataset.lat);
+        const scheduleLng = document.getElementById('schedule-data').dataset.lng === "" ? null : parseFloat(document.getElementById('schedule-data').dataset.lng);
         const maxDistance = 100; // meters
 
         // Hidden inputs & controls
@@ -148,7 +199,7 @@
         const latitudeInput = document.getElementById('latitude');
         const longitudeInput = document.getElementById('longitude');
         const imageInput = document.getElementById('image');
-        const startBtn = document.getElementById('start-delivery-btn');
+        const submitBtn = document.getElementById('submit-btn');
         const warnEl = document.getElementById('location-warning');
         const distanceWarnEl = document.getElementById('distance-warning');
         const requestPermBtn = document.getElementById('request-location-permission');
@@ -207,7 +258,11 @@
             // Update distance display
             const distanceDisplay = document.getElementById('distance-display');
             if (distanceDisplay) {
-                distanceDisplay.textContent = `${distance.toFixed(0)} meter dari lokasi penjemputan`;
+                @if($type === 'in')
+                    distanceDisplay.textContent = `${distance.toFixed(0)} meter dari lokasi penjemputan`;
+                @else
+                    distanceDisplay.textContent = `${distance.toFixed(0)} meter dari lokasi pengantaran`;
+                @endif
                 if (distance <= maxDistance) {
                     distanceDisplay.className = 'text-green-700';
                 } else {
@@ -241,7 +296,7 @@
             const hasLocationPermission = warnEl.classList.contains('hidden');
             const isDistanceValid = distanceWarnEl.classList.contains('hidden');
 
-            startBtn.disabled = !(hasLocationPermission && isDistanceValid);
+            submitBtn.disabled = !(hasLocationPermission && isDistanceValid);
         }
 
         function getCurrentLocation() {
@@ -452,15 +507,15 @@
         }
 
         // Tangani submit: ambil foto otomatis lalu submit form
-        const startForm = startBtn.closest('form');
-        startForm.addEventListener('submit', async (e) => {
+        const submitForm = submitBtn.closest('form');
+        submitForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            startBtn.disabled = true;
+            submitBtn.disabled = true;
             try {
                 await captureAndFillImage();
-                startForm.submit();
+                submitForm.submit();
             } catch (_) {
-                startBtn.disabled = false;
+                submitBtn.disabled = false;
             }
         });
 

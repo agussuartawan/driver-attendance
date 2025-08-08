@@ -27,19 +27,21 @@
         <!-- Dotted line separator -->
         <div class="border-t-2 border-dotted border-gray-300 my-4"></div>
 
-<!-- Search and Filter Bar -->
-<form action="" method="get" class="flex items-center space-x-2 mb-6">
+        <!-- Search and Filter Bar -->
+        <form action="{{ route('mobile.attendance.history') }}" method="get" class="flex items-center space-x-2 mb-6">
             <!-- Search Input -->
             <div class="flex-1">
                 <input
+                    value="{{ request('search') }}"
                     type="text"
+                    name="search"
                     placeholder="Search"
                     class="w-full px-4 py-3 border border-gray-300 rounded-l-lg focus:outline-none focus:border-green-400 text-sm"
                 >
             </div>
 
             <!-- Search Button -->
-            <button type="button" class="px-4 py-3 bg-green-200 hover:bg-green-300 transition-colors">
+            <button type="submit" class="px-4 py-3 bg-green-200 hover:bg-green-300 transition-colors">
                 <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
@@ -55,114 +57,85 @@
 
         <!-- Sample attendance history cards -->
         <div class="space-y-4">
-            <!-- Card 1: Today's attendance -->
-            <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-                <div class="flex items-center justify-between mb-3">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                        <span class="text-sm font-medium text-gray-900">Hari Ini</span>
+            <!-- Attendance Cards -->
+            @forelse ($attendances as $attendance)
+                <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                    <!-- Header: Day and Date -->
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            <span class="text-sm font-medium text-gray-900">{{ $attendance->day }}</span>
+                        </div>
+                        <span class="text-xs text-gray-500">{{ $attendance->date->translatedFormat('d M Y') }}</span>
                     </div>
-                    <span class="text-xs text-gray-500">Senin, 15 Jan 2024</span>
-                </div>
 
-                <div class="grid grid-cols-2 gap-4 mb-3">
-                    <div class="text-center">
-                        <div class="text-xs text-gray-500 mb-1">Masuk</div>
-                        <div class="text-sm font-semibold text-green-600">08:15</div>
+                    <!-- Customer Info -->
+                    <div class="mb-4 p-3 bg-gray-50 rounded-lg">
+                        <div class="text-xs text-gray-500 mb-1">Customer</div>
+                        <div class="text-sm font-medium text-gray-900">{{ $attendance->customer }}</div>
                     </div>
-                    <div class="text-center">
-                        <div class="text-xs text-gray-500 mb-1">Keluar</div>
-                        <div class="text-sm font-semibold text-red-600">17:30</div>
-                    </div>
-                </div>
 
-                <div class="flex items-center justify-between">
-                    <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Tepat Waktu</span>
-                    <span class="text-xs text-gray-500">Durasi: 9j 15m</span>
-                </div>
-            </div>
-
-            <!-- Card 2: Yesterday's attendance -->
-            <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-                <div class="flex items-center justify-between mb-3">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                        <span class="text-sm font-medium text-gray-900">Kemarin</span>
+                    <!-- Attendance In Section -->
+                    <div class="mb-4 p-3 bg-green-50 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="text-xs text-gray-500">Absen Masuk</div>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">{{ $attendance->start_status }}</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="text-sm font-semibold text-green-600">{{ $attendance->start_time }}</div>
+                            @if($attendance->start_image)
+                                <img src="{{ asset('storage/' . $attendance->start_image) }}" alt="Foto Masuk" class="w-8 h-8 rounded object-cover">
+                            @else
+                                <div class="w-8 h-8 bg-gray-200 rounded flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                            @endif
+                        </div>
                     </div>
-                    <span class="text-xs text-gray-500">Minggu, 14 Jan 2024</span>
-                </div>
 
-                <div class="grid grid-cols-2 gap-4 mb-3">
-                    <div class="text-center">
-                        <div class="text-xs text-gray-500 mb-1">Masuk</div>
-                        <div class="text-sm font-semibold text-yellow-600">08:45</div>
+                    <!-- Attendance Out Section -->
+                    <div class="mb-4 p-3 bg-red-50 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="text-xs text-gray-500">Absen Keluar</div>
+                            <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">{{ $attendance->end_status }}</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="text-sm font-semibold text-red-600">{{ $attendance->end_time }}</div>
+                            @if($attendance->end_image)
+                                <img src="{{ asset('storage/' . $attendance->end_image) }}" alt="Foto Keluar" class="w-8 h-8 rounded object-cover">
+                            @else
+                                <div class="w-8 h-8 bg-gray-200 rounded flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                            @endif
+                        </div>
                     </div>
-                    <div class="text-center">
-                        <div class="text-xs text-gray-500 mb-1">Keluar</div>
-                        <div class="text-sm font-semibold text-red-600">17:00</div>
-                    </div>
-                </div>
 
-                <div class="flex items-center justify-between">
-                    <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Terlambat</span>
-                    <span class="text-xs text-gray-500">Durasi: 8j 15m</span>
-                </div>
-            </div>
-
-            <!-- Card 3: Previous day -->
-            <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-                <div class="flex items-center justify-between mb-3">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                        <span class="text-sm font-medium text-gray-900">Sabtu</span>
-                    </div>
-                    <span class="text-xs text-gray-500">Sabtu, 13 Jan 2024</span>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4 mb-3">
-                    <div class="text-center">
-                        <div class="text-xs text-gray-500 mb-1">Masuk</div>
-                        <div class="text-sm font-semibold text-green-600">08:00</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-xs text-gray-500 mb-1">Keluar</div>
-                        <div class="text-sm font-semibold text-red-600">17:00</div>
+                    <!-- Duration -->
+                    <div class="flex items-center justify-center p-2 bg-blue-50 rounded-lg">
+                        <span class="text-xs text-blue-700 font-medium">Durasi: {{ $attendance->duration }}</span>
                     </div>
                 </div>
-
-                <div class="flex items-center justify-between">
-                    <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Tepat Waktu</span>
-                    <span class="text-xs text-gray-500">Durasi: 9j 0m</span>
+            @empty
+                <div class="text-center text-gray-500 py-8">
+                    <svg class="w-12 h-12 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <div class="text-sm">Tidak ada data absensi</div>
                 </div>
-            </div>
-
-            <!-- Card 4: Absent day -->
-            <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm opacity-60">
-                <div class="flex items-center justify-between mb-3">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-3 h-3 bg-gray-400 rounded-full"></div>
-                        <span class="text-sm font-medium text-gray-900">Jumat</span>
-                    </div>
-                    <span class="text-xs text-gray-500">Jumat, 12 Jan 2024</span>
-                </div>
-
-                <div class="text-center py-4">
-                    <div class="text-sm text-gray-500 mb-1">Tidak ada data absensi</div>
-                    <div class="text-xs text-gray-400">Libur / Cuti</div>
-                </div>
-
-                <div class="flex items-center justify-center">
-                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">Tidak Hadir</span>
-                </div>
-            </div>
+            @endforelse
         </div>
 
         <!-- Load more button -->
-        <div class="mt-6 text-center">
+        <!-- <div class="mt-6 text-center">
             <button class="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors">
                 Lihat Lebih Banyak
             </button>
-        </div>
+        </div> -->
     </div>
 
     <!-- Smiley decoration at bottom right -->

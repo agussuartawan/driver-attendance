@@ -14,4 +14,9 @@ class Schedule extends Model
     {
         return $this->belongsTo(User::class, 'driver_id');
     }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
 }

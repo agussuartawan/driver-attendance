@@ -33,7 +33,14 @@
         <header class="bg-gradient-to-br from-green-600 to-green-500 text-green-50 p-4 relative overflow-hidden">
             <div class="flex items-center justify-between relative z-10">
                 <div class="text-xl font-medium">@yield('title')</div>
-                <div class="text-xl font-dancing-script">Senyum!</div>
+                <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                    <span class="text-white font-semibold text-sm">{{ auth()->user()->name[0] }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-semibold text-sm">{{ auth()->user()->name }}</span>
+                </div>
+            </div>
             </div>
 
             <!-- Smiley decoration -->

@@ -60,17 +60,11 @@ Route::middleware('auth')->group(function () {
                 return view('mobile.attendance.index');
             })->name('mobile.attendance');
 
-            Route::get('/start', function () {
-                return view('mobile.attendance.start');
-            })->name('mobile.attendance.start');
+            Route::get('/schedules', [ScheduleController::class, 'getDriverSchedules'])->name('mobile.attendance.schedule');
+            Route::get('/{type}/{schedule}', [AttendanceController::class, 'form'])->name('mobile.attendance.form');
+            Route::post('/{type}/{schedule}', [AttendanceController::class, 'create'])->name('mobile.attendance.create');
 
-            Route::get('/end', function () {
-                return view('mobile.attendance.end');
-            })->name('mobile.attendance.end');
-
-            Route::get('/history', function () {
-                return view('mobile.attendance.history');
-            })->name('mobile.attendance.history');
+            Route::get('/history', [AttendanceController::class, 'getDriverAttendance'])->name('mobile.attendance.history');
         });
 
         Route::group(['prefix' => 'receipt'], function () {

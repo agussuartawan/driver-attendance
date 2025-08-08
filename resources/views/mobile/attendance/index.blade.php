@@ -28,11 +28,11 @@
 
         <!-- Action Buttons -->
         <div class="space-y-4 flex flex-col gap-2">
-            <a href="{{ route('mobile.attendance.start') }}" class="block w-full py-4 px-6 mb-4 rounded-full border-2 border-green-600 text-green-600 bg-white font-medium text-center transition-all duration-200 hover:bg-green-600 hover:text-white">
+            <a href="{{ route('mobile.attendance.schedule', ['type' => 'in']) }}" class="block w-full py-4 px-6 mb-4 rounded-full border-2 border-green-600 text-green-600 bg-white font-medium text-center transition-all duration-200 hover:bg-green-600 hover:text-white">
                 Mulai Pengantaran
             </a>
 
-            <a href="{{ route('mobile.attendance.end') }}" class="w-full py-4 px-6 mb-4 rounded-full border-2 border-green-600 text-green-600 bg-white font-medium text-center transition-all duration-200 hover:bg-green-600 hover:text-white">
+            <a href="{{ route('mobile.attendance.schedule', ['type' => 'out']) }}" class="w-full py-4 px-6 mb-4 rounded-full border-2 border-green-600 text-green-600 bg-white font-medium text-center transition-all duration-200 hover:bg-green-600 hover:text-white">
                 Selesai Pengantaran
             </a>
 

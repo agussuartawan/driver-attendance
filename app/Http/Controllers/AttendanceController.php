@@ -98,8 +98,17 @@ class AttendanceController extends Controller
             ->orderBy('date', 'desc');
 
         // Filter berdasarkan tanggal jika ada
-        if ($request->has('start_date') && $request->has('end_date')) {
-            $attendances->whereBetween('date', [$request->start_date, $request->end_date]);
+        if ($request->has('start_date') && $request->start_date) {
+            $attendances->whereDate('date', '>=', $request->start_date);
+        }
+        if ($request->has('end_date') && $request->end_date) {
+            $attendances->whereDate('date', '<=', $request->end_date);
+        }
+
+        // Validasi: end_date tidak boleh lebih kecil dari start_date
+        if ($request->start_date && $request->end_date && $request->start_date > $request->end_date) {
+            return redirect()->route('mobile.attendance.history')
+                ->with('error', 'Tanggal akhir tidak boleh lebih kecil dari tanggal awal');
         }
 
         // Filter berdasarkan nama customer jika ada

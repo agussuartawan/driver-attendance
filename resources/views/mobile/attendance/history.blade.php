@@ -252,18 +252,7 @@
         </div> -->
     </div>
 
-    <!-- Smiley decoration at bottom right -->
-    <div class="fixed bottom-20 right-4 w-24 h-24 bg-green-500 rounded-full opacity-80 flex items-center justify-center">
-        <div class="flex flex-col items-center">
-            <div class="flex space-x-1 mb-1">
-                <div class="w-2 h-2 bg-white rounded-full"></div>
-                <div class="w-2 h-2 bg-white rounded-full"></div>
-            </div>
-            <div class="w-8 h-4 border-2 border-white border-t-transparent border-l-transparent border-r-transparent rounded-full"></div>
-        </div>
-    </div>
-
-        <style>
+    <style>
         #date-filter-section,
         #date-presets-section,
         #filter-actions-section {

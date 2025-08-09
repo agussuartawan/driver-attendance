@@ -17,17 +17,7 @@
     @stack('styles')
 </head>
 <body class="bg-gray-100 overflow-x-hidden">
-    @if(session('success'))
-        <div class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-sm px-4">
-            <x-alert type="success" message="{{ session('success') }}" :timeout="0" />
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-sm px-4">
-            <x-alert type="error" message="{{ session('error') }}" :timeout="0" />
-        </div>
-    @endif
+    <x-alert-container />
 
     <div class="w-[375px] max-w-[375px] mx-auto min-h-screen bg-white shadow-2xl relative overflow-hidden">
         <!-- Mobile Header -->
@@ -45,8 +35,8 @@
             </div>
 
             <!-- Smiley decoration -->
-            <div class="absolute -bottom-8 -right-8 w-32 h-32 bg-green-500 rounded-full opacity-20"></div>
-            <div class="absolute -bottom-8 -right-8 w-20 h-20 bg-green-400 rounded-full opacity-30"></div>
+            <!-- <div class="absolute -bottom-8 -right-8 w-32 h-32 bg-green-500 rounded-full opacity-20"></div>
+            <div class="absolute -bottom-8 -right-8 w-20 h-20 bg-green-400 rounded-full opacity-30"></div> -->
         </header>
 
         <!-- Main Content Area -->

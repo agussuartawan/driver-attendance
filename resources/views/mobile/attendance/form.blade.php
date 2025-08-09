@@ -30,10 +30,6 @@
                     </a>
                 </div>
             </div>
-
-            <!-- Smiley decoration -->
-            <div class="absolute -bottom-8 -right-8 w-32 h-32 bg-green-500 rounded-full opacity-20"></div>
-            <div class="absolute -bottom-8 -right-8 w-20 h-20 bg-green-400 rounded-full opacity-30"></div>
         </div>
 
         <!-- Dotted line separator -->
@@ -176,17 +172,6 @@
          data-lat="{{ $type === 'in' ? $schedule->start_latitude : $schedule->end_latitude }}"
          data-lng="{{ $type === 'in' ? $schedule->start_longitude : $schedule->end_longitude }}"
          style="display: none;"></div>
-
-    <!-- Smiley decoration at bottom right -->
-    <div class="fixed bottom-20 right-4 w-24 h-24 bg-green-500 rounded-full opacity-80 flex items-center justify-center">
-        <div class="flex flex-col items-center">
-            <div class="flex space-x-1 mb-1">
-                <div class="w-2 h-2 bg-white rounded-full"></div>
-                <div class="w-2 h-2 bg-white rounded-full"></div>
-            </div>
-            <div class="w-8 h-4 border-2 border-white border-t-transparent border-l-transparent border-r-transparent rounded-full"></div>
-        </div>
-    </div>
 
     <script>
         // Schedule coordinates for distance validation
@@ -437,7 +422,7 @@
             try {
                 stream = await navigator.mediaDevices.getUserMedia({
                     video: {
-                        facingMode: 'environment', // Use back camera on mobile
+                        facingMode: 'user', // Use front camera on mobile
                         width: { ideal: 1280 },
                         height: { ideal: 720 }
                     }

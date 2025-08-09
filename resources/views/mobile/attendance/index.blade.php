@@ -9,7 +9,7 @@
             <div class="flex items-center justify-between relative z-10">
                 <div class="text-sm">
                     <div class="font-medium text-xs">Selamat datang {{ auth()->user()->name }},</div>
-                    <div class="text-green-100 text-xs">Siap untuk pengantaran hari ini?</div>
+                    <div class="text-green-100 text-xs">Siap untuk bekerja hari ini?</div>
                 </div>
                 <div class="text-right">
                     <div class="text-xs text-green-100">{{ now()->format('d M Y') }}</div>
@@ -80,8 +80,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <div class="text-lg font-bold">Mulai Pengantaran</div>
-                                <div class="text-sm text-green-100">Klik untuk memulai shift</div>
+                                <div class="text-lg font-bold">Absensi Masuk</div>
+                                <div class="text-sm text-green-100">Klik untuk memulai absensi</div>
                             </div>
                         </div>
                         <svg class="w-6 h-6 text-white opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -103,8 +103,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <div class="text-lg font-bold">Selesai Pengantaran</div>
-                                <div class="text-sm text-orange-100">Klik untuk mengakhiri shift</div>
+                                <div class="text-lg font-bold">Absensi Selesai</div>
+                                <div class="text-sm text-orange-100">Klik untuk mengakhiri absensi</div>
                             </div>
                         </div>
                         <svg class="w-6 h-6 text-white opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -127,7 +127,7 @@
                             </div>
                             <div>
                                 <div class="text-lg font-bold">Riwayat Absensi</div>
-                                <div class="text-sm text-blue-100">Lihat data pengantaran</div>
+                                <div class="text-sm text-blue-100">Lihat data absensi</div>
                             </div>
                         </div>
                         <svg class="w-6 h-6 text-white opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -171,7 +171,7 @@
     </div>
 
     <!-- Smiley decoration at bottom right -->
-    <div class="fixed bottom-20 right-4 w-24 h-24 bg-green-500 rounded-full opacity-80 flex items-center justify-center">
+    <!-- <div class="fixed bottom-20 right-4 w-24 h-24 bg-green-500 rounded-full opacity-80 flex items-center justify-center">
         <div class="flex flex-col items-center">
             <div class="flex space-x-1 mb-1">
                 <div class="w-2 h-2 bg-white rounded-full"></div>
@@ -179,7 +179,7 @@
             </div>
             <div class="w-8 h-4 border-2 border-white border-t-transparent border-l-transparent border-r-transparent rounded-full"></div>
         </div>
-    </div>
+    </div> -->
 
     <script>
         // Update time every second

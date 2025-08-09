@@ -48,9 +48,9 @@
                     $statusLabel = ucfirst($schedule->status ?? '-');
 
                     if (($schedule->status ?? '') === 'pending') {
-                        $dotClass = 'bg-yellow-500'; $badgeClass = 'bg-yellow-100 text-yellow-800'; $statusLabel = 'Menunggu';
-                    } elseif (($schedule->status ?? '') === 'in-progress') {
-                        $dotClass = 'bg-blue-500'; $badgeClass = 'bg-blue-100 text-blue-800'; $statusLabel = 'Berjalan';
+                        $dotClass = 'bg-yellow-500'; $badgeClass = 'bg-yellow-100 text-yellow-800'; $statusLabel = 'Belum Dimulai';
+                    } elseif (($schedule->status ?? '') === 'in_progress') {
+                        $dotClass = 'bg-blue-500'; $badgeClass = 'bg-blue-100 text-blue-800'; $statusLabel = 'Sedang Berjalan';
                     } elseif (($schedule->status ?? '') === 'completed') {
                         $dotClass = 'bg-green-500'; $badgeClass = 'bg-green-100 text-green-800'; $statusLabel = 'Selesai';
                     } elseif (($schedule->status ?? '') === 'canceled') {
@@ -91,7 +91,7 @@
                         </div>
 
                         <div class="space-y-3 mb-3">
-                            <div class="flex items-center justify-between">
+                            <div class="flex items-center justify-between mb-2">
                                 <div class="text-xs text-gray-500">{{ $isStart ? 'Mulai' : 'Selesai' }}</div>
                                 <div class="text-sm font-semibold text-green-600">
                                     {{ $date ? $date->format('H.i') : '-' }}
@@ -99,8 +99,8 @@
                             </div>
 
                             <div>
-                                <div class="text-xs text-gray-500">Alamat {{ $isStart ? 'Penjemputan' : 'Pengantaran' }}</div>
-                                <div class="text-sm font-medium text-gray-800 whitespace-pre-line break-words leading-relaxed">
+                                <div class="text-xs text-gray-500 mb-1">Alamat {{ $isStart ? 'Penjemputan' : 'Pengantaran' }}</div>
+                                <div class="text-sm font-medium text-gray-800 break-words leading-relaxed">
                                     {{ $displayAddress }}
                                 </div>
                             </div>
@@ -149,16 +149,6 @@
         </div>
     </div>
 
-    <!-- Smiley decoration at bottom right -->
-    <div class="fixed bottom-20 right-4 w-24 h-24 bg-green-500 rounded-full opacity-80 flex items-center justify-center">
-        <div class="flex flex-col items-center">
-            <div class="flex space-x-1 mb-1">
-                <div class="w-2 h-2 bg-white rounded-full"></div>
-                <div class="w-2 h-2 bg-white rounded-full"></div>
-            </div>
-            <div class="w-8 h-4 border-2 border-white border-t-transparent border-l-transparent border-r-transparent rounded-full"></div>
-        </div>
-    </div>
 @push('scripts')
 <script>
   function openMapsWithCurrentLocation(anchor) {

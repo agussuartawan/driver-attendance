@@ -9,6 +9,8 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
+    <x-alert-container />
+
     <!-- Mobile Version (hidden on desktop) -->
     <div class="md:hidden min-h-screen flex flex-col bg-gray-50">
         <!-- Green Header Section -->

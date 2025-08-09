@@ -59,7 +59,7 @@
                 <div class="p-4 bg-gray-100 rounded-md grid grid-cols-1 gap-4">
                     <label for="start_location" class="block text-sm font-medium text-gray-700">Lokasi Penjemputan <span class="text-red-500">*</span></label>
                     <div class="relative">
-                        <input type="text" value="{{ $schedule ? $schedule->start_location : old('start_location') }}" name="start_location" id="start_location" placeholder="Masukkan alamat atau klik pada peta" class="mt-1 block w-full p-2 rounded-md border border-gray-300 shadow-sm focus:outline-green-500 sm:text-sm" required>
+                        <input type="text" value="{{ $schedule ? $schedule->start_location : old('start_location') }}" name="start_location" id="start_location" placeholder="Masukkan alamat atau klik pada peta" class="mt-1 block w-full p-2 rounded-md border border-gray-300 shadow-sm focus:outline-green-500 sm:text-sm" required autocomplete="off">
                         <div id="start-search-results" class="absolute z-[9999] w-full bg-white border border-gray-300 rounded-md shadow-lg hidden max-h-60 overflow-y-auto"></div>
                     </div>
 
@@ -76,7 +76,7 @@
                 <div class="p-4 bg-gray-100 rounded-md grid grid-cols-1 gap-4">
                     <label for="end_location" class="block text-sm font-medium text-gray-700">Lokasi Pengantaran <span class="text-red-500">*</span></label>
                     <div class="relative">
-                        <input type="text" value="{{ $schedule ? $schedule->end_location : old('end_location') }}" name="end_location" id="end_location" placeholder="Masukkan alamat atau klik pada peta" class="mt-1 block w-full p-2 rounded-md border border-gray-300 shadow-sm focus:outline-green-500 sm:text-sm" required>
+                        <input type="text" value="{{ $schedule ? $schedule->end_location : old('end_location') }}" name="end_location" id="end_location" placeholder="Masukkan alamat atau klik pada peta" class="mt-1 block w-full p-2 rounded-md border border-gray-300 shadow-sm focus:outline-green-500 sm:text-sm" required autocomplete="off">
                         <div id="end-search-results" class="absolute z-[9999] w-full bg-white border border-gray-300 rounded-md shadow-lg hidden max-h-60 overflow-y-auto"></div>
                     </div>
 
@@ -108,7 +108,7 @@
     <script>
         // Configuration object for map settings
         const MAP_CONFIG = {
-            defaultLocation: [-6.2088, 106.8456], // Jakarta, Indonesia
+            defaultLocation: [-8.6841, 115.1889], // Denpasar
             zoom: 13,
             searchZoom: 15,
             tileLayer: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -373,9 +373,8 @@
                         const lon = parseFloat(item.dataset.lon);
                         const name = item.dataset.name;
 
-                        const latLng = [lat, lon];
-                        this.placeMarker(latLng);
-                        this.updateLocationInfo(latLng);
+                        this.placeMarker([lat, lon]);
+                        this.updateLocationInfo({lat, lng: lon});
 
                         const locationFieldId = `${this.currentActive}_location`;
                         const locationElement = document.getElementById(locationFieldId);

@@ -16,17 +16,7 @@
     @stack('styles')
 </head>
 <body class="bg-amber-50">
-    @if(session('success'))
-        <div class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-sm px-4">
-            <x-alert type="success" message="{{ session('success') }}" :timeout="session('timeout') ? session('timeout') : 3000" />
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-sm px-4">
-            <x-alert type="error" message="{{ session('error') }}" :timeout="session('timeout') ? session('timeout') : 3000" />
-        </div>
-    @endif
+    <x-alert-container />
 
     <div class="min-h-screen flex flex-col">
         <!-- Top Header Bar -->

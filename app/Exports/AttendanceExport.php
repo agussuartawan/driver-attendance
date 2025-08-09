@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\Attendance;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -21,9 +22,10 @@ class AttendanceExport implements FromCollection, WithHeadings, WithMapping
             'Nama Karyawan',
             'Tanggal',
             'Tipe',
-            'Waktu',
-            'Created At',
-            'Updated At'
+            'Lokasi',
+            'Kordinat',
+            'Bukti',
+            'Status'
         ];
     }
 
@@ -34,9 +36,10 @@ class AttendanceExport implements FromCollection, WithHeadings, WithMapping
             $attendance->employee->name ?? 'N/A',
             $attendance->date,
             $attendance->type,
-            $attendance->time,
-            $attendance->created_at,
-            $attendance->updated_at
+            $attendance->location,
+            $attendance->latitude . ', ' . $attendance->longitude,
+            url(Storage::url($attendance->image)),
+            $attendance->status == 'on_time' ? 'Tepat Waktu' : ($attendance->status == 'late' ? 'Terlambat' : 'Terlalu Awal')
         ];
     }
 }

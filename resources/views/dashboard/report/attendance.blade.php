@@ -35,7 +35,7 @@
                     $attendance->location = '<span class="text-gray-400">Tidak tersedia</span>';
                 }
                 $attendance->type = '<span class="inline-flex px-3 py-1 text-xs font-medium ' . ($attendance->type == 'in' ? 'bg-blue-100 text-blue-800' : 'bg-orange-100 text-orange-800') . ' rounded-full">' . ($attendance->type == 'in' ? 'Masuk' : 'Pulang') . '</span>';
-                $attendance->status = '<span class="inline-flex px-3 py-1 text-xs font-medium ' . ($attendance->status == 'on_time' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800') . ' rounded-full">' . ($attendance->status == 'on_time' ? 'Tepat Waktu' : 'Terlambat') . '</span>';
+                $attendance->status = '<span class="inline-flex px-3 py-1 text-xs font-medium ' . ($attendance->status == 'on_time' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800') . ' rounded-full">' . ($attendance->status == 'late' ? 'Terlambat' : ($attendance->status == 'early' ? 'Terlalu Awal' : 'Tepat Waktu')) . '</span>';
                 return $attendance;
             });
 

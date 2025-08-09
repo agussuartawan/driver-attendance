@@ -63,7 +63,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [AttendanceController::class, 'driverHome'])->name('mobile.attendance');
             Route::get('/schedules', [ScheduleController::class, 'getDriverSchedules'])->name('mobile.attendance.schedule');
             Route::get('/{type}/{schedule}', [AttendanceController::class, 'form'])->name('mobile.attendance.form');
-            Route::post('/{type}/{schedule}', [AttendanceController::class, 'create'])->name('mobile.attendance.create');
+            Route::post('/{type}/{schedule}', [AttendanceController::class, 'store'])->name('mobile.attendance.store');
             Route::get('/history', [AttendanceController::class, 'getDriverAttendance'])->name('mobile.attendance.history');
         });
 

@@ -22,7 +22,7 @@
             ];
 
             $data = $receipts->through(function ($receipt) {
-                $receipt->image = '<a href="' . asset('storage/' . $receipt->image) . '" target="_blank" class="text-blue-500">Lihat Bukti</a>';
+                $receipt->image = '<a href="' . $receipt->image . '" target="_blank" class="text-blue-500">Lihat Bukti</a>';
                 $receipt->user = $receipt->user->name;
                 return $receipt;
             })

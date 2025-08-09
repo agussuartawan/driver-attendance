@@ -10,11 +10,16 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+use App\Services\UploadService;
 
 class AttendanceController extends Controller
 {
+    protected $uploadService;
+    public function __construct(UploadService $uploadService)
+    {
+        $this->uploadService = $uploadService;
+    }
+
     public function report(Request $request)
     {
         $attendances = Attendance::with('employee:id,name')->with('schedule:id,customer_name')->orderBy('date', 'desc');
@@ -38,7 +43,7 @@ class AttendanceController extends Controller
         return Excel::download(new AttendanceExport, 'attendance.xlsx');
     }
 
-    public function create(AttendanceRequest $request, $type, Schedule $schedule)
+    public function store(AttendanceRequest $request, $type, Schedule $schedule)
     {
         $data = $request->validated();
 
@@ -62,9 +67,7 @@ class AttendanceController extends Controller
         elseif (str_starts_with($meta, 'data:image/svg')) $extension = 'svg';
 
         $binary = base64_decode($content);
-        $filename = 'attendance/' . uniqid('img_') . '.' . $extension;
-        Storage::disk('public')->put($filename, $binary);
-        $data['image'] = $filename;
+        $data['image'] = $this->uploadService->upload($binary, "attendance");
 
         Attendance::create($data);
         $schedule->update(['status' => $type == 'in' ? 'in_progress' : 'completed']);

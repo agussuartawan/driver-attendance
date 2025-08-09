@@ -198,7 +198,7 @@
                         <div class="flex items-center justify-between">
                             <div class="text-sm font-semibold text-green-600">{{ $attendance->start_time }}</div>
                             @if($attendance->start_image)
-                                <img src="{{ asset('storage/' . $attendance->start_image) }}" alt="Foto Masuk" class="w-8 h-8 rounded object-cover">
+                                <img src="{{ $attendance->start_image }}" alt="Foto Masuk" class="w-8 h-8 rounded object-cover">
                             @else
                                 <div class="w-8 h-8 bg-gray-200 rounded flex items-center justify-center">
                                     <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -218,7 +218,7 @@
                         <div class="flex items-center justify-between">
                             <div class="text-sm font-semibold text-red-600">{{ $attendance->end_time }}</div>
                             @if($attendance->end_image)
-                                <img src="{{ asset('storage/' . $attendance->end_image) }}" alt="Foto Keluar" class="w-8 h-8 rounded object-cover">
+                                <img src="{{ $attendance->end_image }}" alt="Foto Keluar" class="w-8 h-8 rounded object-cover">
                             @else
                                 <div class="w-8 h-8 bg-gray-200 rounded flex items-center justify-center">
                                     <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

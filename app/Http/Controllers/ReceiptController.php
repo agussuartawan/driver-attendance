@@ -5,9 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Receipt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\UploadService;
 
 class ReceiptController extends Controller
 {
+    protected $uploadService;
+    public function __construct(UploadService $uploadService)
+    {
+        $this->uploadService = $uploadService;
+    }
+
     public function index()
     {
         // Get receipt statistics
@@ -40,8 +47,7 @@ class ReceiptController extends Controller
         ]);
 
         $image = $request->file('image');
-        $fileName = time() . '_' . $image->getClientOriginalName();
-        $filePath = $image->storeAs('receipts', $fileName, 'public');
+        $filePath = $this->uploadService->upload($image, 'receipts');
 
         Receipt::create([
             'user_id' => Auth::id(),

@@ -142,7 +142,7 @@
         </div>
 
         <!-- Submit Button -->
-        <form action="{{ route('mobile.attendance.create', ['type' => $type, 'schedule' => $schedule]) }}" method="post" class="mb-6">
+        <form action="{{ route('mobile.attendance.store', ['type' => $type, 'schedule' => $schedule]) }}" method="post" class="mb-6">
             @csrf
             <input type="hidden" name="location" id="location">
             <input type="hidden" name="latitude" id="latitude">

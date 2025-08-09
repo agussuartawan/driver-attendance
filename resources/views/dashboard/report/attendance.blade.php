@@ -26,7 +26,7 @@
             $data = $attendances->through(function ($attendance) {
                 $attendance->customer = $attendance->schedule->customer_name;
                 $attendance->employee = $attendance->employee->name;
-                $attendance->image = '<a href="' . asset('storage/' . $attendance->image) . '" target="_blank" class="text-blue-600">Lihat Bukti</a>';
+                $attendance->image = '<a href="' . $attendance->image . '" target="_blank" class="text-blue-600">Lihat Bukti</a>';
                 // Buka Google Maps dengan latitude dan longitude dari attendance
                 if (!empty($attendance->latitude) && !empty($attendance->longitude)) {
                     $googleMapsUrl = 'https://www.google.com/maps?q=' . $attendance->latitude . ',' . $attendance->longitude;

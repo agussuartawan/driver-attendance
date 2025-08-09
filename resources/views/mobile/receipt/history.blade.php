@@ -79,7 +79,7 @@
                                     <!-- Action Buttons -->
                                     <div class="flex items-center space-x-2 mt-3">
                                         @if($receipt->image)
-                                            <a href="{{ asset('storage/' . $receipt->image) }}"
+                                            <a href="{{ $receipt->image }}"
                                                target="_blank"
                                                class="flex-1 bg-green-50 text-green-700 text-xs px-3 py-1.5 rounded-lg font-medium text-center hover:bg-green-100 transition-colors">
                                                 Lihat File

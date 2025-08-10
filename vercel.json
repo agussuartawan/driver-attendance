@@ -22,7 +22,7 @@
         "APP_ENV": "production",
         "APP_TIMEZONE": "Asia/Makassar",
         "APP_DEBUG": "false",
-        "APP_URL": "https://driver-attendance.vercel.app",
+        "APP_URL": "https://senyum-pearl.vercel.app",
         "APP_KEY": "base64:TjYyos+X84yEUs0Zer6fms6uX8W2igGFbu8i3cuSV08=",
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",

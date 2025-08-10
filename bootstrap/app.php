@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\TrustProxies;
+use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -19,10 +20,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         // Trust semua proxy dan baca header X-Forwarded-* agar Laravel ngerti HTTPS dari Vercel
-        $middleware->trustProxies(
-            trustAll: true,
-            headers: TrustProxies::HEADER_X_FORWARDED_ALL
-        );
+        $middleware->append([
+            \App\Http\Middleware\TrustVercelProxies::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

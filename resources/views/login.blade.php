@@ -40,7 +40,6 @@
                         </label>
                         <input
                             type="text"
-                            id="email"
                             name="email"
                             class="w-full px-4 py-3 text-sm border rounded-lg text-base transition-all duration-300 bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-100 {{ $errors->has('email') ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-green-500' }}"
                             placeholder="Masukkan email"
@@ -58,7 +57,6 @@
                         </label>
                         <input
                             type="password"
-                            id="password"
                             name="password"
                             class="w-full px-4 py-3 text-sm border rounded-lg text-base transition-all duration-300 bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-100 {{ $errors->has('password') ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-green-500' }}"
                             placeholder="Masukkan password"
@@ -125,7 +123,6 @@
                         </label>
                         <input
                             type="text"
-                            id="email"
                             name="email"
                             class="w-full px-4 py-3 border-2 rounded-lg text-sm transition-all duration-300 bg-white focus:outline-none focus:ring-4 focus:ring-green-100 {{ $errors->has('email') ? 'border-red-500 focus:border-red-500' : 'border-gray-200 focus:border-green-500' }}"
                             placeholder="Masukkan email"
@@ -143,7 +140,6 @@
                         </label>
                         <input
                             type="password"
-                            id="password"
                             name="password"
                             class="w-full px-4 py-3 border-2 rounded-lg text-sm transition-all duration-300 bg-white focus:outline-none focus:ring-4 focus:ring-green-100 {{ $errors->has('password') ? 'border-red-500 focus:border-red-500' : 'border-gray-200 focus:border-green-500' }}"
                             placeholder="Masukkan password"

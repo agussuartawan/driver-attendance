@@ -50,11 +50,14 @@ Route::middleware('auth')->group(function () {
     });
 
     // Report routes
-    Route::group(['prefix' => 'report', 'middleware' => ['role:admin|manager']], function () {
+    Route::middleware(['role:admin|manager'])->group(function () {
         // Dashboard routes
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-        Route::get('/attendance', [AttendanceController::class, 'report'])->name('report.attendance');
-        Route::get('/attendance/export', [AttendanceController::class, 'export'])->name('report.attendance.export');
+
+        Route::group(['prefix' => 'report'], function () {
+            Route::get('/attendance', [AttendanceController::class, 'report'])->name('report.attendance');
+            Route::get('/attendance/export', [AttendanceController::class, 'export'])->name('report.attendance.export');
+        });
     });
 
     // Mobile routes

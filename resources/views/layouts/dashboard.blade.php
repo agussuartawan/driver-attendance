@@ -102,25 +102,33 @@
                     </div>
 
                     <div class="space-y-2">
-                        <a href="{{ route('employee') }}" class="flex items-center gap-4 px-6 py-2 text-green-600 hover:bg-green-50 hover:text-green-700 hover:shadow-lg hover:scale-105 hover:translate-x-1 transition-all duration-300 ease-in-out rounded-xl mx-2 {{ str_contains(request()->route()->getName(), 'employee') ? 'bg-green-100 text-green-700 font-medium shadow-sm' : '' }}">
-                            <x-icons.heroicon name="users" />
-                            <span class="font-medium">DATA KARYAWAN</span>
-                        </a>
+                        @role('admin')
+                            <a href="{{ route('employee') }}" class="flex items-center gap-4 px-6 py-2 text-green-600 hover:bg-green-50 hover:text-green-700 hover:shadow-lg hover:scale-105 hover:translate-x-1 transition-all duration-300 ease-in-out rounded-xl mx-2 {{ str_contains(request()->route()->getName(), 'employee') ? 'bg-green-100 text-green-700 font-medium shadow-sm' : '' }}">
+                                <x-icons.heroicon name="users" />
+                                <span class="font-medium">DATA KARYAWAN</span>
+                            </a>
+                        @endrole
 
-                        <a href="{{ route('schedule') }}" class="flex items-center gap-4 px-6 py-2 text-green-600 hover:bg-green-50 hover:text-green-700 hover:shadow-lg hover:scale-105 hover:translate-x-1 transition-all duration-300 ease-in-out rounded-xl mx-2 {{ str_contains(request()->route()->getName(), 'schedule') ? 'bg-green-100 text-green-700 font-medium shadow-sm' : '' }}">
-                            <x-icons.heroicon name="calendar" />
-                            <span class="font-medium">JADWAL TAMU</span>
-                        </a>
+                        @role('admin')
+                            <a href="{{ route('schedule') }}" class="flex items-center gap-4 px-6 py-2 text-green-600 hover:bg-green-50 hover:text-green-700 hover:shadow-lg hover:scale-105 hover:translate-x-1 transition-all duration-300 ease-in-out rounded-xl mx-2 {{ str_contains(request()->route()->getName(), 'schedule') ? 'bg-green-100 text-green-700 font-medium shadow-sm' : '' }}">
+                                <x-icons.heroicon name="calendar" />
+                                <span class="font-medium">JADWAL TAMU</span>
+                            </a>
+                        @endrole
 
-                        <a href="{{ route('receipt') }}" class="flex items-center gap-4 px-6 py-2 text-green-600 hover:bg-green-50 hover:text-green-700 hover:shadow-lg hover:scale-105 hover:translate-x-1 transition-all duration-300 ease-in-out rounded-xl mx-2 {{ str_contains(request()->route()->getName(), 'receipt') ? 'bg-green-100 text-green-700 font-medium shadow-sm' : '' }}">
-                            <x-icons.heroicon name="document" />
-                            <span class="font-medium">NOTA BIAYA</span>
-                        </a>
+                        @role('admin')
+                            <a href="{{ route('receipt') }}" class="flex items-center gap-4 px-6 py-2 text-green-600 hover:bg-green-50 hover:text-green-700 hover:shadow-lg hover:scale-105 hover:translate-x-1 transition-all duration-300 ease-in-out rounded-xl mx-2 {{ str_contains(request()->route()->getName(), 'receipt') ? 'bg-green-100 text-green-700 font-medium shadow-sm' : '' }}">
+                                <x-icons.heroicon name="document" />
+                                <span class="font-medium">NOTA BIAYA</span>
+                            </a>
+                        @endrole
 
-                        <a href="{{ route('report.attendance') }}" class="flex items-center gap-4 px-6 py-2 text-green-600 hover:bg-green-50 hover:text-green-700 hover:shadow-lg hover:scale-105 hover:translate-x-1 transition-all duration-300 ease-in-out rounded-xl mx-2 {{ str_contains(request()->route()->getName(), 'report.attendance') ? 'bg-green-100 text-green-700 font-medium shadow-sm' : '' }}">
-                            <x-icons.heroicon name="folder" />
-                            <span class="font-medium">LAPORAN ABSENSI</span>
-                        </a>
+                        @role('admin|manager')
+                            <a href="{{ route('report.attendance') }}" class="flex items-center gap-4 px-6 py-2 text-green-600 hover:bg-green-50 hover:text-green-700 hover:shadow-lg hover:scale-105 hover:translate-x-1 transition-all duration-300 ease-in-out rounded-xl mx-2 {{ str_contains(request()->route()->getName(), 'report.attendance') ? 'bg-green-100 text-green-700 font-medium shadow-sm' : '' }}">
+                                <x-icons.heroicon name="folder" />
+                                <span class="font-medium">LAPORAN ABSENSI</span>
+                            </a>
+                        @endrole
                     </div>
                 </nav>
             </aside>

@@ -58,7 +58,7 @@
 
                     <a href="{{ route('mobile.receipt') }}" class="flex flex-col items-center justify-center py-1 px-2 text-xs font-medium transition-colors duration-200 {{ request()->routeIs('mobile.receipt') ? 'text-green-600' : 'text-gray-500' }}">
                         <svg class="w-4 h-4 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 21H6a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2v14a2 2 0 01-2 2h-3m-6 0v-2a2 2 0 012-2h2a2 2 0 012 2v2m-6 0h6"></path>
                         </svg>
                         <span>Nota Biaya</span>
                     </a>

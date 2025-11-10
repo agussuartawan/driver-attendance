@@ -44,13 +44,13 @@
 
         <!-- Action Buttons -->
         <div class="space-y-4">
-            <button class="w-full py-2 px-6 rounded-lg border-2 border-green-600 text-green-600 bg-white font-medium text-center transition-all duration-200 hover:bg-green-600 hover:text-white">
+            <!-- <button class="w-full py-2 px-6 rounded-lg border-2 border-green-600 text-green-600 bg-white font-medium text-center transition-all duration-200 hover:bg-green-600 hover:text-white">
                 Edit Profil
             </button>
 
             <button class="w-full py-2 px-6 rounded-lg border-2 border-green-600 text-green-600 bg-white font-medium text-center transition-all duration-200 hover:bg-green-600 hover:text-white">
                 Ubah Password
-            </button>
+            </button> -->
 
             <form method="POST" action="{{ route('logout') }}" class="mt-6">
                 @csrf

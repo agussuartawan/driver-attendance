@@ -39,7 +39,7 @@ class EmployeeController extends Controller
     public function store(EmployeeFormRequest $request)
     {
         $data = $request->validated();
-        $data['password'] = Hash::make('password');
+        $data['password'] = Hash::make($data['password']);
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('images', 'public');
         }

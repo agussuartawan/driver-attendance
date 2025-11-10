@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Receipt;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\UploadService;
+use Carbon\Carbon;
 
 class ReceiptController extends Controller
 {
@@ -35,7 +37,13 @@ class ReceiptController extends Controller
 
     public function add()
     {
-        return view('mobile.receipt.add');
+        $schedules = Schedule::where('driver_id', Auth::id())->get();
+        $schedules = $schedules->map(function ($schedule) {
+            $schedule->name = $schedule->customer_name . ' | ' . Carbon::parse($schedule->start_date)->format('d/m/Y H:i') . ' - ' . Carbon::parse($schedule->end_date)->format('d/m/Y H:i');
+            return $schedule;
+        });
+
+        return view('mobile.receipt.add', compact('schedules'));
     }
 
     public function store(Request $request)
@@ -43,6 +51,7 @@ class ReceiptController extends Controller
         $request->validate([
             'amount' => 'required|numeric|min:0',
             'category' => 'required|string|max:100',
+            'schedule_id' => 'required|exists:schedules,id',
             'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
@@ -54,7 +63,8 @@ class ReceiptController extends Controller
             'amount' => $request->amount,
             'category' => $request->category,
             'image' => $filePath,
-            'date' => now()
+            'date' => now(),
+            'schedule_id' => $request->schedule_id,
         ]);
 
         return redirect()->route('mobile.receipt')->with('success', 'Nota biaya berhasil diupload');
@@ -62,7 +72,7 @@ class ReceiptController extends Controller
 
     public function history()
     {
-        $receipts = Receipt::where('user_id', Auth::id())
+        $receipts = Receipt::with('schedule:id,customer_name')->where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 

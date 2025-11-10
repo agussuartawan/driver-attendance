@@ -22,9 +22,10 @@ class EmployeeFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . ($this->employee->id ?? 'null'),
-            'phone' => 'required',
+            'password' => 'required',
+            'phone' => 'required|string|max:255',
             'vehicle' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];

@@ -51,6 +51,23 @@
                         @enderror
                     </div>
 
+                    <!-- Schedule Input -->
+                    <div class="mb-6">
+                        <label for="schedule_id" class="block text-sm font-medium text-gray-700 mb-2">Jadwal</label>
+                        <select id="schedule_id"
+                                name="schedule_id"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                                required>
+                            <option value="">Pilih jadwal</option>
+                            @foreach ($schedules as $schedule)
+                                <option value="{{ $schedule->id }}" {{ old('schedule_id') == $schedule->id ? 'selected' : '' }}>{{ $schedule->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('schedule_id')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <!-- Category Input -->
                     <div class="mb-6">
                         <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Kategori</label>

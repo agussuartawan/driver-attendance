@@ -44,17 +44,16 @@
                     Logout
                     </button>
                 </form>
-                <div class="flex items-center gap-0">
-                    <!-- Search Icon -->
+
+                <!-- <div class="flex items-center gap-0">
                     <button class="p-3 hover:bg-white/10 rounded-xl transition-all duration-200 group">
                         <x-icons.heroicon name="magnifying-glass" class="group-hover:scale-110 transition-transform" />
                     </button>
-                    <!-- Notification Icon -->
                     <button class="p-3 hover:bg-white/10 rounded-xl transition-all duration-200 group relative">
                         <x-icons.heroicon name="bell" class="group-hover:scale-110 transition-transform" />
                         <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-400 rounded-full border-2 border-white"></span>
                     </button>
-                </div>
+                </div> -->
 
                 <!-- User Profile -->
                 <div class="flex items-center gap-3">

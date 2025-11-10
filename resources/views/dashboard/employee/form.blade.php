@@ -29,6 +29,13 @@
                 @enderror
             </div>
             <div class="col-span-1">
+                <label for="password" class="block text-sm font-medium text-gray-700">Password*</label>
+                <input type="password" name="password" id="password" class="mt-1 block w-full p-2 rounded-md border border-gray-300 shadow-sm focus:outline-green-500 sm:text-sm" required>
+                @error('password')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+            <div class="col-span-1">
                 <label for="phone" class="block text-sm font-medium text-gray-700">Telepon*</label>
                 <input value="{{ $employee->phone ?? old('phone') }}" type="text" name="phone" id="phone" class="mt-1 block w-full p-2 rounded-md border border-gray-300 shadow-sm focus:outline-green-500 sm:text-sm" required>
                 @error('phone')

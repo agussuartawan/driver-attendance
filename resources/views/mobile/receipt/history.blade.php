@@ -68,7 +68,7 @@
                                     <div class="flex items-start justify-between">
                                         <div class="flex-1">
                                             <h3 class="text-sm font-semibold text-gray-900 truncate">{{ $receipt->category }}</h3>
-                                            <p class="text-xs text-gray-500 mt-1">{{ $receipt->date }}</p>
+                                            <p class="text-xs text-gray-500 mt-1">{{ $receipt->schedule->customer_name ?? 'Tanpa jadwal' }}</p>
                                         </div>
                                         <div class="text-right ml-2">
                                             <div class="text-sm font-bold text-gray-900">Rp {{ number_format($receipt->amount, 0, ',', '.') }}</div>

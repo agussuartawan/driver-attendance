@@ -9,6 +9,8 @@ services:
     restart: unless-stopped
     working_dir: /var/www/html
     command: php-fpm
+    ports:
+      - "9000:9000"
     volumes:
       - .:/var/www/html
       - laravel_storage:/var/www/html/storage
@@ -22,6 +24,3 @@ networks:
 volumes:
   laravel_storage:
   laravel_bootstrap:
-
-ports:
-  - "9000:9000"

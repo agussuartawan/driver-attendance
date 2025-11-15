@@ -1,29 +1,21 @@
-# Base image PHP-FPM 8.3
 FROM php:8.3-fpm
 
-# Install dependencies & PostgreSQL PDO
+# Install dependencies
 RUN apt-get update && apt-get install -y \
-    git unzip libpq-dev libzip-dev zip \
-    && docker-php-ext-install pdo pdo_pgsql zip
+    curl zip unzip git libpng-dev libonig-dev libxml2-dev libzip-dev \
+    && docker-php-ext-install pdo_mysql mbstring zip gd
 
 # Install Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set working directory
+# Set Workdir
 WORKDIR /var/www/html
 
 # Copy project files
 COPY . .
 
-# Install Laravel dependencies
+# Composer install
 RUN composer install --no-dev --optimize-autoloader
 
-# Laravel optimizations
-RUN php artisan config:clear && php artisan route:clear && php artisan view:clear
-
-# Expose the port Laravel will run on
-EXPOSE 8000
-
-# Start Laravel with auto migrate & storage link
-CMD php artisan migrate --force && \
-    php artisan serve --host=0.0.0.0 --port=$PORT
+# Permission fix
+RUN chown -R www-data:www-data storage bootstrap/cache

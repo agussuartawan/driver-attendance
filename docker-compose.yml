@@ -22,3 +22,6 @@ networks:
 volumes:
   laravel_storage:
   laravel_bootstrap:
+
+ports:
+  - "9000:9000"

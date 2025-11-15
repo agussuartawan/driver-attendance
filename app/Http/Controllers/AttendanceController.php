@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendance;
 use App\Exports\AttendanceExport;
+use App\Events\AttendanceCreated;
 use App\Http\Requests\AttendanceRequest;
 use App\Models\Schedule;
 use Carbon\Carbon;
@@ -69,8 +70,10 @@ class AttendanceController extends Controller
         $binary = base64_decode($content);
         $data['image'] = $this->uploadService->upload($binary, "attendance");
 
-        Attendance::create($data);
+        $attendance = Attendance::create($data);
         $schedule->update(['status' => $type == 'in' ? 'in_progress' : 'completed']);
+
+        event(new AttendanceCreated($attendance));
 
         return redirect()->route('mobile.attendance')->with('success', 'Berhasil melakukan absensi');
     }

@@ -26,6 +26,7 @@ class ScheduleFormRequest extends FormRequest
             'customer_phone' => 'required|string|max:255',
             'start_date' => 'required|date',
             'end_date' => 'required|date',
+            'category' => 'required|in:half_day,check_in_check_out,full_day',
             'start_location' => 'required|string|max:255',
             'start_latitude' => 'required|numeric',
             'start_longitude' => 'required|numeric',

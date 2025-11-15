@@ -66,4 +66,44 @@ class EmployeeController extends Controller
         $employee->update(['status' => $employee->status == 'active' ? 'inactive' : 'active']);
         return back()->with('success', 'Status karyawan berhasil diubah');
     }
+
+    public function show(User $employee)
+    {
+        // Ensure employee has driver role
+        if (!$employee->hasRole('driver')) {
+            abort(404);
+        }
+
+        // Load relationships
+        $employee->load(['roles']);
+
+        // Get statistics
+        $totalSchedules = \App\Models\Schedule::where('driver_id', $employee->id)->count();
+        $totalReceipts = \App\Models\Receipt::where('user_id', $employee->id)->count();
+        $totalAttendances = \App\Models\Attendance::where('user_id', $employee->id)->count();
+        $totalReceiptAmount = \App\Models\Receipt::where('user_id', $employee->id)->sum('amount');
+
+        // Get recent schedules
+        $recentSchedules = \App\Models\Schedule::where('driver_id', $employee->id)
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        // Get recent receipts
+        $recentReceipts = \App\Models\Receipt::where('user_id', $employee->id)
+            ->with('schedule:id,customer_name')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        return view('dashboard.employee.detail', compact(
+            'employee',
+            'totalSchedules',
+            'totalReceipts',
+            'totalAttendances',
+            'totalReceiptAmount',
+            'recentSchedules',
+            'recentReceipts'
+        ));
+    }
 }

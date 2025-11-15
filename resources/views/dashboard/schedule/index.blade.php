@@ -15,6 +15,7 @@
         @php
             $columns = [
                 ['key' => 'customer', 'label' => 'Tamu', 'class' => 'font-medium text-gray-900'],
+                ['key' => 'category', 'label' => 'Kategori'],
                 ['key' => 'driver', 'label' => 'Driver'],
                 ['key' => 'start_date', 'label' => 'Tanggal Mulai', 'type' => 'date', 'format' => 'd M Y'],
                 ['key' => 'end_date', 'label' => 'Tanggal Selesai', 'type' => 'date', 'format' => 'd M Y'],
@@ -24,6 +25,7 @@
             $data = $schedules->through(function ($schedule) {
                 $schedule->customer = $schedule->customer_name . ' - ' . $schedule->customer_phone;
                 $schedule->driver = $schedule->driver->name;
+                $schedule->category = $schedule->category ? ucfirst(str_replace('_', ' ', $schedule->category)) : '-';
                 return $schedule;
             });
 

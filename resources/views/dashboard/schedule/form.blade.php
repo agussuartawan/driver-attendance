@@ -31,7 +31,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-3 gap-4">
                 <div class="col-span-1">
                     <label for="start_date" class="block text-sm font-medium text-gray-700">Tanggal Mulai <span class="text-red-500">*</span></label>
                     <input type="datetime-local" value="{{ $schedule ? $schedule->start_date : old('start_date') }}" name="start_date" id="start_date" class="mt-1 block w-full p-2 rounded-md border border-gray-300 shadow-sm focus:outline-green-500 sm:text-sm" required>
@@ -39,6 +39,15 @@
                 <div class="col-span-1">
                     <label for="end_date" class="block text-sm font-medium text-gray-700">Tanggal Selesai <span class="text-red-500">*</span></label>
                     <input type="datetime-local" value="{{ $schedule ? $schedule->end_date : old('end_date') }}" name="end_date" id="end_date" class="mt-1 block w-full p-2 rounded-md border border-gray-300 shadow-sm focus:outline-green-500 sm:text-sm" required>
+                </div>
+                <div class="col-span-1">
+                    <label for="category" class="block text-sm font-medium text-gray-700">Kategori <span class="text-red-500">*</span></label>
+                    <select name="category" id="category" class="mt-1 block w-full p-2 rounded-md border border-gray-300 shadow-sm focus:outline-green-500 sm:text-sm" required>
+                        <option value="">Pilih Kategori</option>
+                        <option value="half_day" {{ $schedule && $schedule->category == 'half_day' ? 'selected' : '' }}>Half Day</option>
+                        <option value="check_in_check_out" {{ $schedule && $schedule->category == 'check_in_check_out' ? 'selected' : '' }}>Check In Check Out</option>
+                        <option value="full_day" {{ $schedule && $schedule->category == 'full_day' ? 'selected' : '' }}>Full Day</option>
+                    </select>
                 </div>
             </div>
 
@@ -106,6 +115,49 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <script>
+        // Auto fill category
+        const startDate = document.getElementById('start_date');
+        const endDate = document.getElementById('end_date');
+        const category = document.getElementById('category');
+
+        const setCategory = (durationMs) => {
+            console.log("start date: " + startDate.value);
+            console.log("end date: " + endDate.value);
+            const duration = durationMs / 1000 / 60 / 60;
+            console.log("duration: " + duration);
+            if (duration <= 0) {
+                category.value = '';
+                alert('Jam selesai harus lebih besar dari jam mulai');
+                return;
+            }
+
+            if (duration < 6) {
+                category.value = 'check_in_check_out';
+            }
+
+            if (duration >= 6 && duration < 12) {
+                category.value = 'half_day';
+            }
+
+            if (duration >= 12) {
+                category.value = 'full_day';
+            }
+        }
+
+        startDate.addEventListener('change', function() {
+            if (endDate.value) {
+                const duration = new Date(endDate.value) - new Date(startDate.value);
+                setCategory(duration);
+            }
+        });
+
+        endDate.addEventListener('change', function() {
+            if (startDate.value) {
+                const duration = new Date(endDate.value) - new Date(startDate.value);
+                setCategory(duration);
+            }
+        });
+
         // Configuration object for map settings
         const MAP_CONFIG = {
             defaultLocation: [-8.6841, 115.1889], // Denpasar

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Receipt;
 use App\Models\Schedule;
+use App\Events\ReceiptCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\UploadService;
@@ -58,7 +59,7 @@ class ReceiptController extends Controller
         $image = $request->file('image');
         $filePath = $this->uploadService->upload($image, 'receipts');
 
-        Receipt::create([
+        $receipt = Receipt::create([
             'user_id' => Auth::id(),
             'amount' => $request->amount,
             'category' => $request->category,
@@ -66,6 +67,8 @@ class ReceiptController extends Controller
             'date' => now(),
             'schedule_id' => $request->schedule_id,
         ]);
+
+        event(new ReceiptCreated($receipt));
 
         return redirect()->route('mobile.receipt')->with('success', 'Nota biaya berhasil diupload');
     }
@@ -134,5 +137,12 @@ class ReceiptController extends Controller
         $receipts = $receipts->paginate(10);
 
         return view('dashboard.receipt.index', compact('receipts'));
+    }
+
+    public function showDashboard(Receipt $receipt)
+    {
+        $receipt->load(['user', 'schedule']);
+
+        return view('dashboard.receipt.detail', compact('receipt'));
     }
 }

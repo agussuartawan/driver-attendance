@@ -6,11 +6,13 @@
     <div class="p-6">
         <!-- Profile Header -->
         <div class="text-center mb-8">
-            <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            @if(auth()->user()->image)
+                <img src="{{ auth()->user()->image }}" alt="Profile" class="w-24 h-24 rounded-full object-cover mx-auto mb-4">
+            @else
                 <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                 </svg>
-            </div>
+            @endif
             <h2 class="text-xl font-semibold text-gray-800">{{ auth()->user()->name ?? 'User' }}</h2>
             <p class="text-gray-600 text-sm">{{ auth()->user()->email ?? 'user@example.com' }}</p>
         </div>
@@ -31,6 +33,16 @@
                 </div>
 
                 <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span class="text-gray-600">Nomor Telepon</span>
+                    <span class="text-gray-800 font-medium">{{ auth()->user()->phone ?? '081234567890' }}</span>
+                </div>
+
+                <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span class="text-gray-600">Kendaraan</span>
+                    <span class="text-gray-800 font-medium">{{ auth()->user()->vehicle ?? 'Kendaraan tidak diisi' }}</span>
+                </div>
+
+                <div class="flex justify-between items-center py-2 border-b border-gray-100">
                     <span class="text-gray-600">Bergabung Sejak</span>
                     <span class="text-gray-800 font-medium">{{ auth()->user()->created_at->format('d M Y') }}</span>
                 </div>
@@ -44,13 +56,13 @@
 
         <!-- Action Buttons -->
         <div class="space-y-4">
-            <!-- <button class="w-full py-2 px-6 rounded-lg border-2 border-green-600 text-green-600 bg-white font-medium text-center transition-all duration-200 hover:bg-green-600 hover:text-white">
+            <a href="{{ route('mobile.profile.edit') }}" class="block w-full py-2 px-6 rounded-lg border-2 border-green-600 text-green-600 bg-white font-medium text-center transition-all duration-200 hover:bg-green-600 hover:text-white">
                 Edit Profil
-            </button>
+            </a>
 
-            <button class="w-full py-2 px-6 rounded-lg border-2 border-green-600 text-green-600 bg-white font-medium text-center transition-all duration-200 hover:bg-green-600 hover:text-white">
+            <a href="{{ route('mobile.profile.edit-password') }}" class="block w-full py-2 px-6 rounded-lg border-2 border-green-600 text-green-600 bg-white font-medium text-center transition-all duration-200 hover:bg-green-600 hover:text-white">
                 Ubah Password
-            </button> -->
+            </a>
 
             <form method="POST" action="{{ route('logout') }}" class="mt-6">
                 @csrf

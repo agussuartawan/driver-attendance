@@ -24,6 +24,10 @@ class PasswordController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        return back()->with('status', 'password-updated');
+        if ($request->input('from_mobile')) {
+            return redirect()->route('mobile.profile')->with('success', 'Password berhasil diperbarui');
+        }
+
+        return back()->with('success', 'Password berhasil diperbarui');
     }
 }

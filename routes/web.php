@@ -3,9 +3,11 @@
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +27,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/form', [EmployeeController::class, 'store'])->name('employee.form.add');
             Route::patch('/form/{employee}', [EmployeeController::class, 'update'])->name('employee.form.edit');
             Route::patch('/status/{employee}', [EmployeeController::class, 'statusToggle'])->name('employee.status.toggle');
+            Route::get('/{employee}', [EmployeeController::class, 'show'])->name('employee.detail');
         });
 
         // Schedule routes
@@ -44,7 +47,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/add', [ReceiptController::class, 'add'])->name('receipt.add');
             Route::post('/store', [ReceiptController::class, 'store'])->name('receipt.store');
             Route::get('/history', [ReceiptController::class, 'history'])->name('receipt.history');
-            Route::get('/{receipt}', [ReceiptController::class, 'show'])->name('receipt.show');
+            Route::get('/{receipt}', [ReceiptController::class, 'showDashboard'])->name('receipt.show');
             Route::delete('/{receipt}', [ReceiptController::class, 'destroy'])->name('receipt.destroy');
         });
     });
@@ -58,6 +61,18 @@ Route::middleware('auth')->group(function () {
             Route::get('/attendance', [AttendanceController::class, 'report'])->name('report.attendance');
             Route::get('/attendance/export', [AttendanceController::class, 'export'])->name('report.attendance.export');
         });
+    });
+
+    // Search routes
+    Route::middleware(['role:admin|manager'])->group(function () {
+        Route::get('/search', [SearchController::class, 'search'])->name('search');
+    });
+
+    // Notification routes
+    Route::middleware(['role:admin|manager'])->group(function () {
+        Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+        Route::post('/notifications/mark-read', [NotificationController::class, 'markAsRead'])->name('notifications.mark-read');
+        Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
     });
 
     // Mobile routes
@@ -82,6 +97,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/profile', function () {
             return view('mobile.profile.index');
         })->name('mobile.profile');
+
+        Route::get('/profile/edit', function () {
+            return view('mobile.profile.edit');
+        })->name('mobile.profile.edit');
+
+        Route::get('/profile/edit-password', function () {
+            return view('mobile.profile.edit-password');
+        })->name('mobile.profile.edit-password');
     });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

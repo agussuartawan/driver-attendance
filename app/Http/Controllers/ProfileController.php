@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Services\UploadService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +12,13 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    protected $uploadService;
+
+    public function __construct(UploadService $uploadService)
+    {
+        $this->uploadService = $uploadService;
+    }
+
     /**
      * Display the user's profile form.
      */
@@ -26,7 +34,21 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filePath = $this->uploadService->upload($image, 'profiles');
+            $data['image'] = $filePath;
+
+            if ($request->user()->image) {
+                if (file_exists(storage_path('app/public/' . $request->user()->image))) {
+                    unlink(storage_path('app/public/' . $request->user()->image));
+                }
+            }
+        }
+
+        $request->user()->fill($data);
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
@@ -34,7 +56,11 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        $redirectRoute = $request->input('from_mobile')
+            ? 'mobile.profile'
+            : 'dashboard';
+
+        return Redirect::route($redirectRoute)->with('success', 'Profile berhasil diperbarui');
     }
 
     /**

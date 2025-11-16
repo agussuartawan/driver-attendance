@@ -141,7 +141,7 @@
         // Schedule coordinates for distance validation
         const scheduleLat = "{{ $schedule->start_latitude }}" === "" ? null : parseFloat("{{ $schedule->start_latitude }}");
         const scheduleLng = "{{ $schedule->start_longitude }}" === "" ? null : parseFloat("{{ $schedule->start_longitude }}");
-        const maxDistance = 100; // meters
+        const maxDistance = 100 * 1000; // 100 kilometers
 
         // Hidden inputs & controls
         const locationInput = document.getElementById('location');

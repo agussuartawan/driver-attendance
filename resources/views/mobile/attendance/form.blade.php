@@ -158,9 +158,9 @@
             <p id="location-warning" class="mt-2 text-xs text-red-600 hidden">Izin lokasi belum diberikan. Aktifkan izin lokasi untuk melanjutkan.</p>
             <p id="distance-warning" class="mt-2 text-xs text-red-600 hidden">
                 @if($type === 'in')
-                    Anda terlalu jauh dari lokasi penjemputan. Jarak maksimal 100 meter. Silakan mendekati lokasi penjemputan.
+                    Anda terlalu jauh dari lokasi penjemputan. Jarak maksimal {{ env('ATTENDANCE_MAX_DISTANCE', 10000) }} meter. Silakan mendekati lokasi penjemputan.
                 @else
-                    Anda terlalu jauh dari lokasi pengantaran. Jarak maksimal 100 meter. Silakan mendekati lokasi pengantaran.
+                    Anda terlalu jauh dari lokasi pengantaran. Jarak maksimal {{ env('ATTENDANCE_MAX_DISTANCE', 10000) }} meter. Silakan mendekati lokasi pengantaran.
                 @endif
             </p>
             <button type="button" id="request-location-permission" class="mt-1 text-xs text-green-700 underline hidden">Aktifkan izin lokasi</button>
@@ -177,7 +177,7 @@
         // Schedule coordinates for distance validation
         const scheduleLat = document.getElementById('schedule-data').dataset.lat === "" ? null : parseFloat(document.getElementById('schedule-data').dataset.lat);
         const scheduleLng = document.getElementById('schedule-data').dataset.lng === "" ? null : parseFloat(document.getElementById('schedule-data').dataset.lng);
-        const maxDistance = 100; // meters
+        const maxDistance = parseInt("{{ env('ATTENDANCE_MAX_DISTANCE', 10000) }}"); // 100 kilometers
 
         // Hidden inputs & controls
         const locationInput = document.getElementById('location');

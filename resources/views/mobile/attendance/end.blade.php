@@ -122,7 +122,7 @@
                 Selesai Pengantaran
             </button>
             <p id="location-warning" class="mt-2 text-xs text-red-600 hidden">Izin lokasi belum diberikan. Aktifkan izin lokasi untuk melanjutkan.</p>
-            <p id="distance-warning" class="mt-2 text-xs text-red-600 hidden">Anda terlalu jauh dari lokasi pengantaran. Jarak maksimal 100 meter. Silakan mendekati lokasi pengantaran.</p>
+            <p id="distance-warning" class="mt-2 text-xs text-red-600 hidden">Anda terlalu jauh dari lokasi pengantaran. Jarak maksimal {{ env('ATTENDANCE_MAX_DISTANCE', 10000) }} meter. Silakan mendekati lokasi pengantaran.</p>
             <button type="button" id="request-location-permission" class="mt-1 text-xs text-green-700 underline hidden">Aktifkan izin lokasi</button>
         </form>
     </div>
@@ -142,7 +142,7 @@
         // Schedule coordinates for distance validation
         const scheduleLat = "{{ $schedule->end_latitude }}" === "" ? null : parseFloat("{{ $schedule->end_latitude }}");
         const scheduleLng = "{{ $schedule->end_longitude }}" === "" ? null : parseFloat("{{ $schedule->end_longitude }}");
-        const maxDistance = 100; // meters
+        const maxDistance = parseInt("{{ env('ATTENDANCE_MAX_DISTANCE', 10000) }}"); // 100 kilometers
 
         // Hidden inputs & controls
         const locationInput = document.getElementById('location');

@@ -19,3 +19,5 @@ RUN composer install --no-dev --optimize-autoloader
 
 # Permission fix
 RUN chown -R www-data:www-data storage bootstrap/cache
+
+EXPOSE 9000

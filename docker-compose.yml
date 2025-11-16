@@ -5,20 +5,14 @@ services:
       dockerfile: Dockerfile
     container_name: driver_attendance
     restart: unless-stopped
-    working_dir: /var/www/html
+    working_dir: /var/www
     command: php-fpm
     ports:
       - "9000:9000"
     volumes:
-      - /var/www/driver-attendance:/var/www/html
-      - laravel_storage:/var/www/html/storage
-      - laravel_bootstrap:/var/www/html/bootstrap/cache
+      - /var/www/driver-attendance:/var/www
     networks:
       - laravel
 
 networks:
   laravel:
-
-volumes:
-  laravel_storage:
-  laravel_bootstrap:

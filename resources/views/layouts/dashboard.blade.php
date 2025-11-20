@@ -164,6 +164,20 @@
                             </a>
                         @endrole
                     </div>
+
+                    <div class="w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent my-4"></div>
+
+                    <!-- Account Section -->
+                    <div class="mb-4">
+                        <div class="text-xs font-semibold text-gray-500 tracking-wider px-6">Akun</div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <a href="{{ route('dashboard.profile') }}" class="flex items-center gap-4 px-6 py-2 text-green-600 hover:bg-green-50 hover:text-green-700 hover:shadow-lg hover:scale-105 hover:translate-x-1 transition-all duration-300 ease-in-out rounded-xl mx-2 {{ request()->routeIs('dashboard.profile') ? 'bg-green-100 text-green-700 font-medium shadow-sm' : '' }}">
+                            <x-icons.heroicon name="user" />
+                            <span class="font-medium">Profil</span>
+                        </a>
+                    </div>
                 </nav>
             </aside>
 

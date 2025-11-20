@@ -30,6 +30,16 @@ class ProfileController extends Controller
     }
 
     /**
+     * Display the user's profile form for dashboard.
+     */
+    public function dashboard(Request $request): View
+    {
+        return view('dashboard.profile', [
+            'user' => $request->user(),
+        ]);
+    }
+
+    /**
      * Update the user's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
@@ -56,11 +66,15 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        $redirectRoute = $request->input('from_mobile')
-            ? 'mobile.profile'
-            : 'dashboard';
+        if ($request->input('from_mobile')) {
+            return Redirect::route('mobile.profile')->with('success', 'Profile berhasil diperbarui');
+        }
 
-        return Redirect::route($redirectRoute)->with('success', 'Profile berhasil diperbarui');
+        if ($request->input('from_dashboard')) {
+            return Redirect::route('dashboard.profile')->with('success', 'Profile berhasil diperbarui');
+        }
+
+        return Redirect::route('dashboard')->with('success', 'Profile berhasil diperbarui');
     }
 
     /**

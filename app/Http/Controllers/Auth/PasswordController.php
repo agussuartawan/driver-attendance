@@ -28,6 +28,10 @@ class PasswordController extends Controller
             return redirect()->route('mobile.profile')->with('success', 'Password berhasil diperbarui');
         }
 
+        if ($request->input('from_dashboard')) {
+            return redirect()->route('dashboard.profile')->with('success', 'Password berhasil diperbarui');
+        }
+
         return back()->with('success', 'Password berhasil diperbarui');
     }
 }

@@ -91,15 +91,21 @@
                 </div>
 
                 <!-- User Profile -->
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                        <span class="text-white font-semibold text-sm">{{ auth()->user()->name[0] }}</span>
-                    </div>
+                <a href="{{ route('dashboard.profile') }}" class="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer group">
+                    @if(auth()->user()->image)
+                        <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 group-hover:border-white/50 transition-colors">
+                            <img src="{{ asset('storage/' . auth()->user()->image) }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
+                        </div>
+                    @else
+                        <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                            <span class="text-white font-semibold text-sm">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                        </div>
+                    @endif
                     <div class="flex flex-col">
                         <span class="font-semibold text-sm">{{ auth()->user()->name }}</span>
                         <span class="text-xs text-green-100">{{ auth()->user()->getRoleNames()->first() }}</span>
                     </div>
-                </div>
+                </a>
             </div>
         </header>
 
@@ -163,20 +169,6 @@
                                 <span class="font-medium">LAPORAN ABSENSI</span>
                             </a>
                         @endrole
-                    </div>
-
-                    <div class="w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent my-4"></div>
-
-                    <!-- Account Section -->
-                    <div class="mb-4">
-                        <div class="text-xs font-semibold text-gray-500 tracking-wider px-6">Akun</div>
-                    </div>
-
-                    <div class="space-y-2">
-                        <a href="{{ route('dashboard.profile') }}" class="flex items-center gap-4 px-6 py-2 text-green-600 hover:bg-green-50 hover:text-green-700 hover:shadow-lg hover:scale-105 hover:translate-x-1 transition-all duration-300 ease-in-out rounded-xl mx-2 {{ request()->routeIs('dashboard.profile') ? 'bg-green-100 text-green-700 font-medium shadow-sm' : '' }}">
-                            <x-icons.heroicon name="user" />
-                            <span class="font-medium">Profil</span>
-                        </a>
                     </div>
                 </nav>
             </aside>

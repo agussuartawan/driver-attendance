@@ -94,7 +94,7 @@
                 <a href="{{ route('dashboard.profile') }}" class="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer group">
                     @if(auth()->user()->image)
                         <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 group-hover:border-white/50 transition-colors">
-                            <img src="{{ asset('storage/' . auth()->user()->image) }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
+                            <img src="{{ auth()->user()->image }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
                         </div>
                     @else
                         <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center group-hover:bg-white/30 transition-colors">

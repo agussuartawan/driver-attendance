@@ -109,9 +109,7 @@ class ReceiptController extends Controller
         }
 
         // Delete file from storage
-        if (file_exists(storage_path('app/public/' . $receipt->image))) {
-            unlink(storage_path('app/public/' . $receipt->image));
-        }
+        $this->uploadService->delete($receipt->image);
 
         $receipt->delete();
 

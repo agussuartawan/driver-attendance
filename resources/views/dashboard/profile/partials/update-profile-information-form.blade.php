@@ -59,7 +59,7 @@
             <div class="mt-2 flex items-center gap-4">
                 @if($user->image)
                     <div class="flex-shrink-0">
-                        <img src="{{ asset('storage/' . $user->image) }}" alt="Foto Profil"
+                        <img src="{{ $user->image }}" alt="Foto Profil"
                              class="h-20 w-20 rounded-full object-cover border-2 border-gray-300">
                     </div>
                 @else

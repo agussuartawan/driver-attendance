@@ -35,7 +35,7 @@ class UploadService
             );
         }
 
-        if (app()->environment('production')) {
+        if (config("supabase.url")) {
             $result = $this->supabase->upload($file, $path);
             return $result['url'];
         } else {
@@ -43,4 +43,15 @@ class UploadService
             return Storage::url($path);
         }
     }
+
+    public function delete($path)
+    {
+        $supabaseUrl = config("supabase.url");
+        if ($supabaseUrl && str_contains($path, $supabaseUrl)) {
+            $this->supabase->delete($path);
+        } else {
+            Storage::delete($path);
+        }
+    }
+
 }

@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -51,10 +52,9 @@ class ProfileController extends Controller
             $filePath = $this->uploadService->upload($image, 'profiles');
             $data['image'] = $filePath;
 
-            if ($request->user()->image) {
-                if (file_exists(storage_path('app/public/' . $request->user()->image))) {
-                    unlink(storage_path('app/public/' . $request->user()->image));
-                }
+            $oldImagePath = $request->user()->image;
+            if ($oldImagePath) {
+                $this->uploadService->delete($oldImagePath);
             }
         }
 

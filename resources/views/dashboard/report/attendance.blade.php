@@ -17,9 +17,9 @@
                 ['key' => 'image', 'label' => 'Bukti', 'type' => 'html'],
                 ['key' => 'employee', 'label' => 'Karyawan', 'class' => 'font-medium text-gray-900'],
                 ['key' => 'customer', 'label' => 'Tamu', 'class' => 'font-medium text-gray-900'],
-                ['key' => 'date', 'label' => 'Tanggal', 'type' => 'date', 'format' => 'd M Y'],
-                ['key' => 'start', 'label' => 'Mulai', 'type' => 'date', 'format' => 'H:i'],
-                ['key' => 'end', 'label' => 'Selesai', 'type' => 'date', 'format' => 'H:i'],
+                ['key' => 'date', 'label' => 'Tanggal'],
+                ['key' => 'start', 'label' => 'Mulai'],
+                ['key' => 'end', 'label' => 'Selesai'],
                 ['key' => 'total_receipt_amount', 'label' => 'Biaya', 'type' => 'currency'],
                 ['key' => 'location', 'label' => 'Lokasi', 'type' => 'html'],
             ];

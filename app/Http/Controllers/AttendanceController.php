@@ -48,13 +48,25 @@ class AttendanceController extends Controller
                 $firstItem = optional($items)->first();
                 $totalReceiptAmount = $items->first()->schedule->receipts->sum('amount');
 
+                $formatTime = function ($model) {
+                    return $model?->date
+                        ? $model->date->format('H:i')
+                        : '-';
+                };
+
+                $formatDate = function ($model) {
+                    return $model?->date
+                        ? $model->date->format('Y-m-d')
+                        : '-';
+                };
+
                 return [
                     'schedule_id'   => $firstItem?->schedule_id,
                     'customer'      => $firstItem?->schedule?->customer_name,
 
-                    'date'          => optional($in?->date)->format('Y-m-d'),
-                    'start'         => optional($in?->date)->format('H:i'),
-                    'end'           => optional($out?->date)->format('H:i'),
+                    'date'          => $formatDate($in),   // jika null → "-"
+                    'start'         => $formatTime($in),   // jika null → "-"
+                    'end'           => $formatTime($out),  // jika null → "-"
 
                     'location'      => $in->location ?? null,
                     'start_latitude'  => $in->latitude ?? null,

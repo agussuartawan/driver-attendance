@@ -23,7 +23,11 @@ class AttendanceController extends Controller
 
     public function report(Request $request)
     {
-        $attendances = Attendance::with('employee:id,name')->with('schedule:id,customer_name')->orderBy('date', 'desc');
+        $attendances = Attendance::with([
+            'employee:id,name',
+            'schedule:id,customer_name',
+            'schedule.receipts',
+        ])->orderBy('date', 'desc');
 
         if ($request->has('start_date') && $request->has('end_date')) {
             $attendances->whereBetween('date', [$request->start_date, $request->end_date]);
@@ -41,8 +45,10 @@ class AttendanceController extends Controller
             ->map(function ($items) {
                 $in  = $items->firstWhere('type', 'in');
                 $out = $items->firstWhere('type', 'out');
+                // ⬅ SUM RECEIPTS
+                $totalReceiptAmount = $items->first()->schedule->receipts->sum('amount');
 
-                return (object) [
+                return [
                     'schedule_id'   => $items->first()->schedule_id,
                     'customer' => $items->first()->schedule->customer_name,
                     'date' => optional($in)->date?->format('Y-m-d'),
@@ -53,10 +59,13 @@ class AttendanceController extends Controller
                     'start_longitude' => $in->longitude ?? null,
                     'end_latitude'  => $out->latitude ?? null,
                     'end_longitude' => $out->longitude ?? null,
-                    'is_start_location_exists' => $in->latitude && $in->longitude,
-                    'is_end_location_exists' => $out->latitude && $out->longitude,
+                    'is_start_location_exists' => !empty($in?->latitude) && !empty($in?->longitude),
+                    'is_end_location_exists' => !empty($out?->latitude) && !empty($out?->longitude),
                     'status'    => $in->status ?? null,
                     'employee'  => $items->first()->employee->name ?? null,
+                    'total_receipt_amount' => $totalReceiptAmount,
+                    'start_image' => $in->image,
+                    'end_image' => $out->image
                 ];
             })
             ->values();

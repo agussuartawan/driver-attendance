@@ -167,6 +167,8 @@
                                     {{ \Carbon\Carbon::parse($row[$column['key']])->format($column['format'] ?? 'd M Y') }}
                                 @elseif(isset($column['type']) && $column['type'] === 'html')
                                     {!! $row[$column['key']] !!}
+                                @elseif(isset($column['type']) && $column['type'] === 'currency')
+                                    {{ $column['format'] ?? 'Rp' }} {{ number_format($row[$column['key']] ?? 0, 0, ',', '.') }}
                                 @else
                                     {{ $row[$column['key']] }}
                                 @endif

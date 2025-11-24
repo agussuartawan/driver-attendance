@@ -36,6 +36,33 @@ class AttendanceController extends Controller
 
         $attendances = $attendances->paginate(10);
 
+        $grouped = $attendances->getCollection()
+            ->groupBy('schedule_id')
+            ->map(function ($items) {
+                $in  = $items->firstWhere('type', 'in');
+                $out = $items->firstWhere('type', 'out');
+
+                return (object) [
+                    'schedule_id'   => $items->first()->schedule_id,
+                    'customer' => $items->first()->schedule->customer_name,
+                    'date' => optional($in)->date?->format('Y-m-d'),
+                    'start' => optional($in)->date?->format('H:i'),
+                    'end' => optional($out)->date?->format('H:i'),
+                    'location'  => $in->location ?? null,
+                    'start_latitude'  => $in->latitude ?? null,
+                    'start_longitude' => $in->longitude ?? null,
+                    'end_latitude'  => $out->latitude ?? null,
+                    'end_longitude' => $out->longitude ?? null,
+                    'is_start_location_exists' => $in->latitude && $in->longitude,
+                    'is_end_location_exists' => $out->latitude && $out->longitude,
+                    'status'    => $in->status ?? null,
+                    'employee'  => $items->first()->employee->name ?? null,
+                ];
+            })
+            ->values();
+
+        $attendances->setCollection($grouped);
+
         return view('dashboard.report.attendance', compact('attendances'));
     }
 

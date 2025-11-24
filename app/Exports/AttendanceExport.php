@@ -38,7 +38,7 @@ class AttendanceExport implements FromCollection, WithHeadings, WithMapping
             $attendance->type,
             $attendance->location,
             $attendance->latitude . ', ' . $attendance->longitude,
-            url(Storage::url($attendance->image)),
+            url($attendance->image),
             $attendance->status == 'on_time' ? 'Tepat Waktu' : ($attendance->status == 'late' ? 'Terlambat' : 'Terlalu Awal')
         ];
     }

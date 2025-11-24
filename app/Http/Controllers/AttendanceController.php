@@ -45,27 +45,33 @@ class AttendanceController extends Controller
             ->map(function ($items) {
                 $in  = $items->firstWhere('type', 'in');
                 $out = $items->firstWhere('type', 'out');
-                // ⬅ SUM RECEIPTS
+                $firstItem = optional($items)->first();
                 $totalReceiptAmount = $items->first()->schedule->receipts->sum('amount');
 
                 return [
-                    'schedule_id'   => $items->first()->schedule_id,
-                    'customer' => $items->first()->schedule->customer_name,
-                    'date' => optional($in)->date?->format('Y-m-d'),
-                    'start' => optional($in)->date?->format('H:i'),
-                    'end' => optional($out)->date?->format('H:i'),
-                    'location'  => $in->location ?? null,
+                    'schedule_id'   => $firstItem?->schedule_id,
+                    'customer'      => $firstItem?->schedule?->customer_name,
+
+                    'date'          => optional($in?->date)->format('Y-m-d'),
+                    'start'         => optional($in?->date)->format('H:i'),
+                    'end'           => optional($out?->date)->format('H:i'),
+
+                    'location'      => $in->location ?? null,
                     'start_latitude'  => $in->latitude ?? null,
                     'start_longitude' => $in->longitude ?? null,
-                    'end_latitude'  => $out->latitude ?? null,
-                    'end_longitude' => $out->longitude ?? null,
+                    'end_latitude'    => $out->latitude ?? null,
+                    'end_longitude'   => $out->longitude ?? null,
+
                     'is_start_location_exists' => !empty($in?->latitude) && !empty($in?->longitude),
-                    'is_end_location_exists' => !empty($out?->latitude) && !empty($out?->longitude),
-                    'status'    => $in->status ?? null,
-                    'employee'  => $items->first()->employee->name ?? null,
+                    'is_end_location_exists'   => !empty($out?->latitude) && !empty($out?->longitude),
+
+                    'status'        => $in->status ?? null,
+                    'employee'      => $firstItem?->employee?->name,
+
                     'total_receipt_amount' => $totalReceiptAmount,
-                    'start_image' => $in->image,
-                    'end_image' => $out->image
+
+                    'start_image'   => $in->image ?? null,
+                    'end_image'     => $out->image ?? null,
                 ];
             })
             ->values();

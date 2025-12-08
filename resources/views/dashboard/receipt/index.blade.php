@@ -15,6 +15,7 @@
         @php
             $columns = [
                 ['key' => 'user', 'label' => 'Nama', 'class' => 'font-medium text-gray-900'],
+                ['key' => 'customer', 'label' => 'Tamu', 'class' => 'font-medium text-gray-900'],
                 ['key' => 'date', 'label' => 'Tanggal', 'type' => 'date', 'format' => 'd M Y'],
                 ['key' => 'amount', 'label' => 'Jumlah', 'type' => 'currency', 'format' => 'Rp'],
                 ['key' => 'category', 'label' => 'Kategori', 'type' => 'text'],
@@ -24,6 +25,7 @@
             $data = $receipts->through(function ($receipt) {
                 $receipt->image = '<a href="' . $receipt->image . '" target="_blank" class="text-blue-500">Lihat Bukti</a>';
                 $receipt->user = $receipt->user->name;
+                $receipt->customer = $receipt->schedule->customer_name;
                 return $receipt;
             })
         @endphp

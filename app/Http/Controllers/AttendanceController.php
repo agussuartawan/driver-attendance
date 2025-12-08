@@ -84,6 +84,8 @@ class AttendanceController extends Controller
 
                     'start_image'   => $in->image ?? null,
                     'end_image'     => $out->image ?? null,
+
+                    'schedule_category' => $firstItem?->schedule?->category,
                 ];
             })
             ->values();

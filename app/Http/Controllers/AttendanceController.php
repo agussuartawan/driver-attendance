@@ -25,7 +25,7 @@ class AttendanceController extends Controller
     {
         $attendances = Attendance::with([
             'employee:id,name',
-            'schedule:id,customer_name',
+            'schedule:id,customer_name,category',
             'schedule.receipts',
         ])->orderBy('date', 'desc');
 
@@ -85,7 +85,7 @@ class AttendanceController extends Controller
                     'start_image'   => $in->image ?? null,
                     'end_image'     => $out->image ?? null,
 
-                    'schedule_category' => $firstItem?->schedule?->category,
+                    'schedule_category' => $firstItem?->schedule?->category ? ucfirst(str_replace('_', ' ', $firstItem?->schedule?->category)) : "-",
                 ];
             })
             ->values();

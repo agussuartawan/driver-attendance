@@ -118,7 +118,7 @@ class ReceiptController extends Controller
 
     public function dashboard(Request $request)
     {
-        $receipts = Receipt::with('user:id,name')->with('schedule:id,customer_name')->orderBy('created_at', 'desc');
+        $receipts = Receipt::with(['user:id,name', 'schedule:id,customer_name'])->orderBy('created_at', 'desc');
 
         if ($request->has('search')) {
             $receipts->whereHas('user', function ($query) use ($request) {

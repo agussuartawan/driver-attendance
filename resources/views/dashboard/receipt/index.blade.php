@@ -25,7 +25,7 @@
             $data = $receipts->through(function ($receipt) {
                 $receipt->image = '<a href="' . $receipt->image . '" target="_blank" class="text-blue-500">Lihat Bukti</a>';
                 $receipt->user = $receipt->user->name;
-                $receipt->customer = $receipt->schedule->customer_name;
+                $receipt->customer = $receipt->schedule?->customer_name ?? "-";
                 return $receipt;
             })
         @endphp

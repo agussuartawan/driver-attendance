@@ -53,7 +53,7 @@ class ReceiptController extends Controller
             'amount' => 'required|numeric|min:0',
             'category' => 'required|string|max:100',
             'schedule_id' => 'required|exists:schedules,id',
-            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'image' => 'required|image|mimes:jpg,jpeg,png|max:10240',
         ]);
 
         $image = $request->file('image');

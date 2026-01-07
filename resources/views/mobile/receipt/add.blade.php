@@ -104,7 +104,7 @@
                                     </svg>
                                     <div>
                                         <span class="text-sm font-medium text-green-600">Klik untuk upload</span>
-                                        <p class="text-xs text-gray-500 mt-1">JPG, PNG (Max. 2MB)</p>
+                                        <p class="text-xs text-gray-500 mt-1">JPG, PNG (Max. 10MB)</p>
                                     </div>
                                 </div>
                             </label>
@@ -135,7 +135,7 @@
                         <ul class="text-xs text-blue-800 space-y-1">
                             <li>• Pastikan foto nota jelas dan tidak blur</li>
                             <li>• Format yang didukung: JPG, PNG</li>
-                            <li>• Ukuran maksimal file: 2MB</li>
+                            <li>• Ukuran maksimal file: 10MB</li>
                             <li>• Isi semua field yang wajib diisi</li>
                         </ul>
                     </div>

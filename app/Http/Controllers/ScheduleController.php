@@ -29,7 +29,7 @@ class ScheduleController extends Controller
         }
 
         $perPage = $request->get('per_page', 10);
-        $schedules = $schedules->paginate($perPage)->withQueryString();
+        $schedules = $schedules->orderBy('start_date', 'desc')->paginate($perPage)->withQueryString();
 
         return view('dashboard.schedule.index', compact('schedules'));
     }

@@ -14,8 +14,8 @@
     <div class="grid grid-cols-1 gap-6">
         @php
             $columns = [
-                ['key' => 'user', 'label' => 'Nama', 'class' => 'font-medium text-gray-900'],
-                ['key' => 'customer', 'label' => 'Tamu', 'class' => 'font-medium text-gray-900'],
+                ['key' => 'user', 'label' => 'Nama', 'class' => 'font-medium text-gray-900', 'sortable' => true, 'sort_key' => 'user_name'],
+                ['key' => 'customer', 'label' => 'Tamu', 'class' => 'font-medium text-gray-900', 'sortable' => true, 'sort_key' => 'customer_name'],
                 ['key' => 'date', 'label' => 'Tanggal', 'type' => 'date', 'format' => 'd M Y', 'sortable' => true, 'sort_key' => 'date'],
                 ['key' => 'amount', 'label' => 'Jumlah', 'type' => 'currency', 'format' => 'Rp', 'sortable' => true, 'sort_key' => 'amount'],
                 ['key' => 'category', 'label' => 'Kategori', 'type' => 'text', 'sortable' => true, 'sort_key' => 'category'],

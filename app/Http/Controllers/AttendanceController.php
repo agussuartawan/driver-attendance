@@ -27,10 +27,13 @@ class AttendanceController extends Controller
             'employee:id,name',
             'schedule:id,customer_name,category',
             'schedule.receipts',
-        ]);
+        ])
+        ->leftJoin('users', 'attendances.user_id', '=', 'users.id')
+        ->leftJoin('schedules', 'attendances.schedule_id', '=', 'schedules.id')
+        ->select('attendances.*');
 
         if ($request->has('start_date') && $request->has('end_date')) {
-            $attendances->whereBetween('date', [$request->start_date, $request->end_date]);
+            $attendances->whereBetween('attendances.date', [$request->start_date, $request->end_date]);
         }
         if ($request->has('search')) {
             $attendances->whereHas('employee', function($query) use ($request) {
@@ -41,11 +44,17 @@ class AttendanceController extends Controller
         $sortBy = $request->get('sort_by', 'date');
         $sortDir = $request->get('sort_dir', 'desc');
 
-        $allowedSorts = ['date', 'created_at'];
+        $allowedSorts = ['date', 'created_at', 'employee_name', 'customer_name'];
         if (in_array($sortBy, $allowedSorts)) {
-            $attendances->orderBy($sortBy, $sortDir);
+            if ($sortBy === 'employee_name') {
+                $attendances->orderBy('users.name', $sortDir);
+            } elseif ($sortBy === 'customer_name') {
+                $attendances->orderBy('schedules.customer_name', $sortDir);
+            } else {
+                $attendances->orderBy('attendances.' . $sortBy, $sortDir);
+            }
         } else {
-            $attendances->orderBy('date', 'desc');
+            $attendances->orderBy('attendances.date', 'desc');
         }
 
         $perPage = $request->get('per_page', 10);
@@ -100,6 +109,18 @@ class AttendanceController extends Controller
                 ];
             })
             ->values();
+
+        if ($sortBy === 'employee_name' || $sortBy === 'customer_name') {
+            $grouped = $grouped->sortBy(function ($item) use ($sortBy, $sortDir) {
+                if ($sortBy === 'employee_name') {
+                    return $item['employee'] ?? '';
+                } elseif ($sortBy === 'customer_name') {
+                    return $item['customer'] ?? '';
+                }
+                return '';
+            }, SORT_REGULAR, $sortDir === 'desc');
+            $grouped = $grouped->values();
+        }
 
         $attendances->setCollection($grouped);
 

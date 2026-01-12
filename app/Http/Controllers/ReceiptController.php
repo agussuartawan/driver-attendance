@@ -118,7 +118,10 @@ class ReceiptController extends Controller
 
     public function dashboard(Request $request)
     {
-        $receipts = Receipt::with(['user:id,name', 'schedule:id,customer_name']);
+        $receipts = Receipt::with(['user:id,name', 'schedule:id,customer_name'])
+            ->leftJoin('users', 'receipts.user_id', '=', 'users.id')
+            ->leftJoin('schedules', 'receipts.schedule_id', '=', 'schedules.id')
+            ->select('receipts.*');
 
         if ($request->has('search')) {
             $receipts->whereHas('user', function ($query) use ($request) {
@@ -126,20 +129,26 @@ class ReceiptController extends Controller
             });
         }
         if ($request->has('start_date') && $request->start_date) {
-            $receipts->whereDate('created_at', '>=', $request->start_date);
+            $receipts->whereDate('receipts.created_at', '>=', $request->start_date);
         }
         if ($request->has('end_date') && $request->end_date) {
-            $receipts->whereDate('created_at', '<=', $request->end_date);
+            $receipts->whereDate('receipts.created_at', '<=', $request->end_date);
         }
 
         $sortBy = $request->get('sort_by', 'created_at');
         $sortDir = $request->get('sort_dir', 'desc');
 
-        $allowedSorts = ['date', 'amount', 'category', 'created_at'];
+        $allowedSorts = ['date', 'amount', 'category', 'created_at', 'user_name', 'customer_name'];
         if (in_array($sortBy, $allowedSorts)) {
-            $receipts->orderBy($sortBy, $sortDir);
+            if ($sortBy === 'user_name') {
+                $receipts->orderBy('users.name', $sortDir);
+            } elseif ($sortBy === 'customer_name') {
+                $receipts->orderBy('schedules.customer_name', $sortDir);
+            } else {
+                $receipts->orderBy('receipts.' . $sortBy, $sortDir);
+            }
         } else {
-            $receipts->orderBy('created_at', 'desc');
+            $receipts->orderBy('receipts.created_at', 'desc');
         }
 
         $perPage = $request->get('per_page', 10);

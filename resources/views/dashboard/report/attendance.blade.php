@@ -15,8 +15,8 @@
         @php
             $columns = [
                 ['key' => 'image', 'label' => 'Bukti', 'type' => 'html'],
-                ['key' => 'employee', 'label' => 'Karyawan', 'class' => 'font-medium text-gray-900'],
-                ['key' => 'customer', 'label' => 'Tamu', 'class' => 'font-medium text-gray-900'],
+                ['key' => 'employee', 'label' => 'Karyawan', 'class' => 'font-medium text-gray-900', 'sortable' => true, 'sort_key' => 'employee_name'],
+                ['key' => 'customer', 'label' => 'Tamu', 'class' => 'font-medium text-gray-900', 'sortable' => true, 'sort_key' => 'customer_name'],
                 ['key' => 'schedule_category', 'label' => 'Kategori', 'class' => 'font-medium text-gray-900'],
                 ['key' => 'date', 'label' => 'Tanggal', 'sortable' => true, 'sort_key' => 'date'],
                 ['key' => 'start', 'label' => 'Mulai'],

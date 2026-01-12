@@ -42,6 +42,12 @@
                 @if(request()->get('end_date'))
                     <input type="hidden" name="end_date" value="{{ request()->get('end_date') }}">
                 @endif
+                @if(request()->get('sort_by'))
+                    <input type="hidden" name="sort_by" value="{{ request()->get('sort_by') }}">
+                @endif
+                @if(request()->get('sort_dir'))
+                    <input type="hidden" name="sort_dir" value="{{ request()->get('sort_dir') }}">
+                @endif
                 <div class="flex gap-3">
                     @if($searchable)
                         <div class="relative flex-1">
@@ -169,7 +175,50 @@
                 <tr class="bg-gray-50 border-b border-gray-200">
                     @foreach($columns as $column)
                         <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700">
-                            {{ $column['label'] }}
+                            @if(isset($column['sortable']) && $column['sortable'])
+                                @php
+                                    $sortKey = $column['sort_key'] ?? $column['key'];
+                                    $currentSort = request()->get('sort_by');
+                                    $currentDir = request()->get('sort_dir', 'asc');
+                                    $isActive = $currentSort === $sortKey;
+                                    $nextDir = $isActive && $currentDir === 'asc' ? 'desc' : 'asc';
+
+                                    $sortUrl = request()->fullUrlWithQuery([
+                                        'sort_by' => $sortKey,
+                                        'sort_dir' => $nextDir,
+                                        'page' => 1
+                                    ]);
+                                @endphp
+                                <a href="{{ $sortUrl }}" class="flex items-center gap-1 hover:text-gray-900 transition-colors">
+                                    <span>{{ $column['label'] }}</span>
+                                    <span class="flex flex-col">
+                                        @if($isActive && $currentDir === 'asc')
+                                            <svg class="w-3 h-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd"/>
+                                            </svg>
+                                            <svg class="w-3 h-3 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                            </svg>
+                                        @elseif($isActive && $currentDir === 'desc')
+                                            <svg class="w-3 h-3 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd"/>
+                                            </svg>
+                                            <svg class="w-3 h-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                            </svg>
+                                        @else
+                                            <svg class="w-3 h-3 text-gray-300 group-hover:text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd"/>
+                                            </svg>
+                                            <svg class="w-3 h-3 text-gray-300 group-hover:text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                            </svg>
+                                        @endif
+                                    </span>
+                                </a>
+                            @else
+                                {{ $column['label'] }}
+                            @endif
                         </th>
                     @endforeach
                     @if(!empty($actions))

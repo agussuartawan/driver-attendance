@@ -16,9 +16,9 @@
             $columns = [
                 ['key' => 'user', 'label' => 'Nama', 'class' => 'font-medium text-gray-900'],
                 ['key' => 'customer', 'label' => 'Tamu', 'class' => 'font-medium text-gray-900'],
-                ['key' => 'date', 'label' => 'Tanggal', 'type' => 'date', 'format' => 'd M Y'],
-                ['key' => 'amount', 'label' => 'Jumlah', 'type' => 'currency', 'format' => 'Rp'],
-                ['key' => 'category', 'label' => 'Kategori', 'type' => 'text'],
+                ['key' => 'date', 'label' => 'Tanggal', 'type' => 'date', 'format' => 'd M Y', 'sortable' => true, 'sort_key' => 'date'],
+                ['key' => 'amount', 'label' => 'Jumlah', 'type' => 'currency', 'format' => 'Rp', 'sortable' => true, 'sort_key' => 'amount'],
+                ['key' => 'category', 'label' => 'Kategori', 'type' => 'text', 'sortable' => true, 'sort_key' => 'category'],
                 ['key' => 'image', 'label' => 'Bukti', 'type' => 'html'],
             ];
 

@@ -14,12 +14,12 @@
     <div class="grid grid-cols-1 gap-6">
         @php
             $columns = [
-                ['key' => 'customer', 'label' => 'Tamu', 'class' => 'font-medium text-gray-900'],
+                ['key' => 'customer', 'label' => 'Tamu', 'class' => 'font-medium text-gray-900', 'sortable' => true, 'sort_key' => 'customer_name'],
                 ['key' => 'category', 'label' => 'Kategori'],
                 ['key' => 'driver', 'label' => 'Driver'],
-                ['key' => 'start_date', 'label' => 'Tanggal Mulai', 'type' => 'date', 'format' => 'd M Y'],
-                ['key' => 'end_date', 'label' => 'Tanggal Selesai', 'type' => 'date', 'format' => 'd M Y'],
-                ['key' => 'status', 'label' => 'Status', 'type' => 'status'],
+                ['key' => 'start_date', 'label' => 'Tanggal Mulai', 'type' => 'date', 'format' => 'd M Y', 'sortable' => true, 'sort_key' => 'start_date'],
+                ['key' => 'end_date', 'label' => 'Tanggal Selesai', 'type' => 'date', 'format' => 'd M Y', 'sortable' => true, 'sort_key' => 'end_date'],
+                ['key' => 'status', 'label' => 'Status', 'type' => 'status', 'sortable' => true, 'sort_key' => 'status'],
             ];
 
             $data = $schedules->through(function ($schedule) {

@@ -27,7 +27,7 @@ class AttendanceController extends Controller
             'employee:id,name',
             'schedule:id,customer_name,category',
             'schedule.receipts',
-        ])->orderBy('date', 'desc');
+        ]);
 
         if ($request->has('start_date') && $request->has('end_date')) {
             $attendances->whereBetween('date', [$request->start_date, $request->end_date]);
@@ -36,6 +36,16 @@ class AttendanceController extends Controller
             $attendances->whereHas('employee', function($query) use ($request) {
                 $query->where('name', 'like', '%' . $request->search . '%');
             });
+        }
+
+        $sortBy = $request->get('sort_by', 'date');
+        $sortDir = $request->get('sort_dir', 'desc');
+
+        $allowedSorts = ['date', 'created_at'];
+        if (in_array($sortBy, $allowedSorts)) {
+            $attendances->orderBy($sortBy, $sortDir);
+        } else {
+            $attendances->orderBy('date', 'desc');
         }
 
         $perPage = $request->get('per_page', 10);

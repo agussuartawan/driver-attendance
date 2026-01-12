@@ -20,8 +20,18 @@ class EmployeeController extends Controller
                 ->orWhere('email', 'like', '%' . $request->search . '%');
         }
 
+        $sortBy = $request->get('sort_by', 'created_at');
+        $sortDir = $request->get('sort_dir', 'desc');
+
+        $allowedSorts = ['name', 'email', 'phone', 'status', 'created_at'];
+        if (in_array($sortBy, $allowedSorts)) {
+            $employees->orderBy($sortBy, $sortDir);
+        } else {
+            $employees->orderBy('created_at', 'desc');
+        }
+
         $perPage = $request->get('per_page', 10);
-        $employees = $employees->orderBy('created_at', 'desc')->paginate($perPage)->withQueryString();
+        $employees = $employees->paginate($perPage)->withQueryString();
 
         return view('dashboard.employee.index', compact('employees'));
     }

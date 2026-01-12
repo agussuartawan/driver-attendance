@@ -18,7 +18,7 @@
                 ['key' => 'employee', 'label' => 'Karyawan', 'class' => 'font-medium text-gray-900'],
                 ['key' => 'customer', 'label' => 'Tamu', 'class' => 'font-medium text-gray-900'],
                 ['key' => 'schedule_category', 'label' => 'Kategori', 'class' => 'font-medium text-gray-900'],
-                ['key' => 'date', 'label' => 'Tanggal'],
+                ['key' => 'date', 'label' => 'Tanggal', 'sortable' => true, 'sort_key' => 'date'],
                 ['key' => 'start', 'label' => 'Mulai'],
                 ['key' => 'end', 'label' => 'Selesai'],
                 ['key' => 'total_receipt_amount', 'label' => 'Biaya', 'type' => 'currency'],

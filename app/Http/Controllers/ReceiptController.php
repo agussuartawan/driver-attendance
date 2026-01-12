@@ -118,7 +118,7 @@ class ReceiptController extends Controller
 
     public function dashboard(Request $request)
     {
-        $receipts = Receipt::with(['user:id,name', 'schedule:id,customer_name'])->orderBy('created_at', 'desc');
+        $receipts = Receipt::with(['user:id,name', 'schedule:id,customer_name']);
 
         if ($request->has('search')) {
             $receipts->whereHas('user', function ($query) use ($request) {
@@ -130,6 +130,16 @@ class ReceiptController extends Controller
         }
         if ($request->has('end_date') && $request->end_date) {
             $receipts->whereDate('created_at', '<=', $request->end_date);
+        }
+
+        $sortBy = $request->get('sort_by', 'created_at');
+        $sortDir = $request->get('sort_dir', 'desc');
+
+        $allowedSorts = ['date', 'amount', 'category', 'created_at'];
+        if (in_array($sortBy, $allowedSorts)) {
+            $receipts->orderBy($sortBy, $sortDir);
+        } else {
+            $receipts->orderBy('created_at', 'desc');
         }
 
         $perPage = $request->get('per_page', 10);

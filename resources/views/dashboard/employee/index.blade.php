@@ -4,12 +4,12 @@
 
 @php
     $columns = [
-        ['key' => 'name', 'label' => 'Nama', 'class' => 'font-medium text-gray-900'],
+        ['key' => 'name', 'label' => 'Nama', 'class' => 'font-medium text-gray-900', 'sortable' => true, 'sort_key' => 'name'],
         ['key' => 'role', 'label' => 'Jabatan'],
-        ['key' => 'email', 'label' => 'Email'],
-        ['key' => 'phone', 'label' => 'Telepon'],
-        ['key' => 'status', 'label' => 'Status', 'type' => 'status'],
-        ['key' => 'created_at', 'label' => 'Tanggal Bergabung', 'type' => 'date', 'format' => 'd M Y']
+        ['key' => 'email', 'label' => 'Email', 'sortable' => true, 'sort_key' => 'email'],
+        ['key' => 'phone', 'label' => 'Telepon', 'sortable' => true, 'sort_key' => 'phone'],
+        ['key' => 'status', 'label' => 'Status', 'type' => 'status', 'sortable' => true, 'sort_key' => 'status'],
+        ['key' => 'created_at', 'label' => 'Tanggal Bergabung', 'type' => 'date', 'format' => 'd M Y', 'sortable' => true, 'sort_key' => 'created_at']
     ];
 
     $actions = [

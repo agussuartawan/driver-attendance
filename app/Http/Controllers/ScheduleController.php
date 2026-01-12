@@ -28,8 +28,18 @@ class ScheduleController extends Controller
             $schedules->where('start_date', '>=', $request->start_date)->where('end_date', '<=', $request->end_date);
         }
 
+        $sortBy = $request->get('sort_by', 'start_date');
+        $sortDir = $request->get('sort_dir', 'desc');
+
+        $allowedSorts = ['customer_name', 'start_date', 'end_date', 'status', 'created_at'];
+        if (in_array($sortBy, $allowedSorts)) {
+            $schedules->orderBy($sortBy, $sortDir);
+        } else {
+            $schedules->orderBy('start_date', 'desc');
+        }
+
         $perPage = $request->get('per_page', 10);
-        $schedules = $schedules->orderBy('start_date', 'desc')->paginate($perPage)->withQueryString();
+        $schedules = $schedules->paginate($perPage)->withQueryString();
 
         return view('dashboard.schedule.index', compact('schedules'));
     }

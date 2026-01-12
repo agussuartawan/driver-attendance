@@ -38,7 +38,8 @@ class AttendanceController extends Controller
             });
         }
 
-        $attendances = $attendances->paginate(10);
+        $perPage = $request->get('per_page', 10);
+        $attendances = $attendances->paginate($perPage)->withQueryString();
 
         $grouped = $attendances->getCollection()
             ->groupBy('schedule_id')

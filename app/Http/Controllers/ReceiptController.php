@@ -132,7 +132,8 @@ class ReceiptController extends Controller
             $receipts->whereDate('created_at', '<=', $request->end_date);
         }
 
-        $receipts = $receipts->paginate(10);
+        $perPage = $request->get('per_page', 10);
+        $receipts = $receipts->paginate($perPage)->withQueryString();
 
         return view('dashboard.receipt.index', compact('receipts'));
     }

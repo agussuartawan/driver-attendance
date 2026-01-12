@@ -36,6 +36,12 @@
             </div>
         @endif
             <form action="{{ request()->url() }}" method="get" class="w-full p-6 border-b border-gray-200">
+                @if(request()->get('start_date'))
+                    <input type="hidden" name="start_date" value="{{ request()->get('start_date') }}">
+                @endif
+                @if(request()->get('end_date'))
+                    <input type="hidden" name="end_date" value="{{ request()->get('end_date') }}">
+                @endif
                 <div class="flex gap-3">
                     @if($searchable)
                         <div class="relative flex-1">
@@ -53,6 +59,23 @@
                                 class="w-full pl-10 px-4 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
                                 placeholder="{{ $searchPlaceholder }}"
                             >
+                        </div>
+                    @endif
+
+                    @if(method_exists($data, 'links'))
+                        <div class="relative">
+                            <label for="perPageSelect-{{ $tableId }}" class="sr-only">Items per page</label>
+                            <select
+                                name="per_page"
+                                id="perPageSelect-{{ $tableId }}"
+                                onchange="this.form.submit()"
+                                class="px-4 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors bg-white"
+                            >
+                                <option value="10" {{ request()->get('per_page', 10) == 10 ? 'selected' : '' }}>10 per halaman</option>
+                                <option value="25" {{ request()->get('per_page', 10) == 25 ? 'selected' : '' }}>25 per halaman</option>
+                                <option value="50" {{ request()->get('per_page', 10) == 50 ? 'selected' : '' }}>50 per halaman</option>
+                                <option value="100" {{ request()->get('per_page', 10) == 100 ? 'selected' : '' }}>100 per halaman</option>
+                            </select>
                         </div>
                     @endif
 
@@ -296,8 +319,15 @@
 
     {{-- Pagination with Tailwind CSS --}}
     @if(method_exists($data, 'links'))
-        <div class="px-6 py-4">
-            {{ $data->links('vendor.pagination.tailwind') }}
+        <div class="px-6 py-4 border-t border-gray-200">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="text-sm text-gray-700">
+                    Menampilkan {{ $data->firstItem() ?? 0 }} sampai {{ $data->lastItem() ?? 0 }} dari {{ $data->total() }} hasil
+                </div>
+                <div>
+                    {{ $data->links('vendor.pagination.tailwind') }}
+                </div>
+            </div>
         </div>
     @endif
 </div>

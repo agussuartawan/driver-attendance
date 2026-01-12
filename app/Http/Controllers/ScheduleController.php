@@ -28,7 +28,8 @@ class ScheduleController extends Controller
             $schedules->where('start_date', '>=', $request->start_date)->where('end_date', '<=', $request->end_date);
         }
 
-        $schedules = $schedules->paginate(10);
+        $perPage = $request->get('per_page', 10);
+        $schedules = $schedules->paginate($perPage)->withQueryString();
 
         return view('dashboard.schedule.index', compact('schedules'));
     }
